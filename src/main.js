@@ -1,4 +1,4 @@
-const THREE = require('three');
+import * as THREE from 'three';
 import {BoxLineGeometry} from
   'three/examples/jsm/geometries/BoxLineGeometry.js';
 import {VRButton} from 'three/examples/jsm/webxr/VRButton.js';
