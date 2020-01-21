@@ -13,7 +13,7 @@ let room;
 let controller; const tempMatrix = new THREE.Matrix4();
 let INTERSECTED;
 
-let userData = {}
+const userData = {};
 
 init();
 animate();
@@ -86,7 +86,14 @@ function init() {
   controller.addEventListener( 'selectstart', function() {
     userData.isSelecting = true;
   } );
-  let controllerPointer = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]), new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 4}));
+  const controllerPointer =
+      new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints([
+            new THREE.Vector3(0, 0, 0),
+            new THREE.Vector3(0, 0, -1),
+          ]),
+          new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 4}),
+      );
   controllerPointer.name = 'pointer';
   controllerPointer.scale.z = 5;
   controller.add(controllerPointer.clone());
