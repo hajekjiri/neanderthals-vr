@@ -13,6 +13,8 @@ let room;
 let controller; const tempMatrix = new THREE.Matrix4();
 let INTERSECTED;
 
+let userData = {}
+
 init();
 animate();
 
@@ -82,60 +84,23 @@ function init() {
 
   controller = renderer.xr.getController( 0 );
   controller.addEventListener( 'selectstart', function() {
-    window.userData.isSelecting = true;
+    userData.isSelecting = true;
   } );
+  let controllerPointer = new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)]), new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 4}));
+  controllerPointer.name = 'pointer';
+  controllerPointer.scale.z = 5;
+  controller.add(controllerPointer.clone());
   controller.addEventListener( 'selectend', function() {
-    window.userData.isSelecting = false;
+    userData.isSelecting = false;
   } );
-  controller.addEventListener( 'connected', function( event ) {
-    window.add( buildController( event.data ) );
-  } );
-  controller.addEventListener( 'disconnected', function() {
-    window.remove( window.children[0] );
-  } );
+
   scene.add( controller );
 
-  window.addEventListener( 'resize', onWindowResize, false );
+  controller.addEventListener( 'resize', onWindowResize, false );
 
   //
 
   document.body.appendChild( VRButton.createButton( renderer ) );
-}
-
-/**
- * Builds controller
- * @param {Event} data
- * @return {THREE.Mesh} line
- */
-function buildController( data ) {
-  switch ( data.targetRayMode ) {
-    case 'tracked-pointer': {
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute(
-          'position',
-          new THREE.Float32BufferAttribute( [0, 0, 0, 0, 0, - 1], 3 ),
-      );
-      geometry.setAttribute(
-          'color',
-          new THREE.Float32BufferAttribute( [0.5, 0.5, 0.5, 0, 0, 0], 3 ),
-      );
-
-      const material = new THREE.LineBasicMaterial(
-          {vertexColors: true, blending: THREE.AdditiveBlending},
-      );
-
-      return new THREE.Line( geometry, material );
-    }
-
-    case 'gaze': {
-      const geometry = new THREE.RingBufferGeometry( 0.02, 0.04, 32 )
-          .translate( 0, 0, - 1 );
-      const material = new THREE.MeshBasicMaterial(
-          {opacity: 0.5, transparent: true},
-      );
-      return new THREE.Mesh( geometry, material );
-    }
-  }
 }
 
 /**
@@ -163,7 +128,7 @@ function animate() {
 function render() {
   const delta = clock.getDelta() * 60;
 
-  if ( controller.userData.isSelecting === true ) {
+  if ( userData.isSelecting === true ) {
     const cube = room.children[0];
     room.remove( cube );
 

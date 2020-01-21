@@ -6,7 +6,9 @@
   "scripts": {
     "test": "mocha --reporter list",
     "lint": "npx eslint ./src/**/*.js && echo OK",
-    "build": "npx webpack && echo OK",
+    "build-dev": "npx webpack --config webpack.dev.js && echo OK",
+    "build-prod": "npx webpack --config webpack.prod.js && echo OK",
+    "watch": "npx webpack --watch --config webpack.dev.js",
     "doc": "rm -rf out && npx jsdoc src -r -d docs"
   },
   "repository": {
@@ -20,6 +22,9 @@
   },
   "homepage": "https://github.com/hajekjiri/neanderthals-vr#readme",
   "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "babel-loader": "^8.0.6",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "jsdoc": "^3.6.3",
