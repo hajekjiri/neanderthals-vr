@@ -16,7 +16,7 @@ jobs:
     - name: Build project
       run: |
         npm ci
-        npm run build
+        npm run build-prod
     - name: Run tests
       run:  npm test
     - name: Lint code
