@@ -105,3 +105,6 @@ dist/*.js
 # Documentation
 docs/
 
+# SSL key & certificate
+ssl/
+
