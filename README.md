@@ -12,7 +12,7 @@ This project is part of the CSC385 Computer Graphics course at [Union College](h
 ### Setup
 Clone the repository and install dependencies.
 ```
-git clone git@github.com:hajekjiri/neanderthals-vr.git
+git clone https://github.com/hajekjiri/neanderthals-vr.git
 cd neanderthals-vr
 npm install
 ```

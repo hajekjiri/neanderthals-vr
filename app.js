@@ -46,6 +46,6 @@ https.createServer({
   cert: fs.readFileSync('./ssl/server.cert'),
 }, app)
     .listen(port, () => {
-      console.log(`Your app is live on https://localhost:${port}/ !`);
+      console.log(`Your app is live at https://localhost:${port}/ !`);
     });
 
