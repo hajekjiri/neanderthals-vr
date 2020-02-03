@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
+  devtool: false,
   entry: './src/main.js',
   output: {
     filename: 'neanderthals-vr.js',
