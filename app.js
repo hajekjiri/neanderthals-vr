@@ -36,6 +36,7 @@ if (! fs.existsSync(path.join(__dirname, 'dist/neanderthals-vr.js'))) {
 }
 
 app.use('/', express.static(path.join(__dirname, 'dist')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
