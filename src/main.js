@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import {MapControls} from 'three/examples/jsm/controls/OrbitControls.js';
-import {Base} from './models/Base';
-import {Neanderthal} from './models/Neanderthal';
-import {Human} from './models/Human';
+import {Base} from './simulation/models/Base';
+import {Neanderthal} from './simulation/models/Neanderthal';
+import {Human} from './simulation/models/Human';
 
 let camera;
 let controls;
