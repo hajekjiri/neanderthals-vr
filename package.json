@@ -33,9 +33,11 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "a-star": "^0.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "https": "^1.0.0",
+    "odex": "^2.0.4",
     "path": "^0.12.7",
     "three": "^0.112.1",
     "yargs": "^15.1.0"
