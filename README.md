@@ -58,7 +58,7 @@ npm run watch
 ##### Testing
 [Mocha](https://mochajs.org/) is the framework of choice for testing. All tests are located in the `test` folder. Use the `test` script to run tests.
 ```
-npm test
+npm run test
 ```
 
 ##### Code style
