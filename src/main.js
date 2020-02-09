@@ -1,8 +1,9 @@
-import * as THREE from 'three';
-import {MapControls} from 'three/examples/jsm/controls/OrbitControls.js';
-import {Base} from './simulation/models/Base';
-import {Neanderthal} from './simulation/models/Neanderthal';
-import {Human} from './simulation/models/Human';
+const THREE = require('three');
+const OrbitControls =
+    require('three/examples/jsm/controls/OrbitControls.js');
+const Base = require('./simulation/models/Base');
+const Neanderthal = require('./simulation/models/Neanderthal');
+const Human = require('./simulation/models/Human');
 
 let camera;
 let controls;
@@ -17,15 +18,11 @@ let stop = 1;
 
 let end = false;
 
-init();
-// remove when using next line for animation loop (requestAnimationFrame)
-// render();
-animate();
 
 /**
  * Init function
  */
-function init() {
+const init = () => {
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xcccccc );
   // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
@@ -44,7 +41,7 @@ function init() {
   camera.position.set( 400, 200, 0 );
 
   // controls
-  controls = new MapControls( camera, renderer.domElement );
+  controls = new OrbitControls.MapControls( camera, renderer.domElement );
 
   // call this only in static scenes (i.e., if there is no animation loop)
   // controls.addEventListener( 'change', render );
@@ -95,7 +92,7 @@ function init() {
   }
 
   // neanderthal base
-  neanderthalBase = new Base('Neanderthals', 0xff0000);
+  neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
 
   neanderthalBase.radius = 100;
   neanderthalBase.model.position.set(
@@ -105,7 +102,7 @@ function init() {
   );
 
   for (let i = 0; i < 10; ++i) {
-    const n = new Neanderthal();
+    const n = new Neanderthal.Neanderthal();
     neanderthalBase.addEntity(n);
     n.model.rotateY(Math.random() * 2 * Math.PI);
     n.model.translateX(5 + Math.random() * neanderthalBase.radius);
@@ -114,7 +111,7 @@ function init() {
   scene.add(neanderthalBase.model);
 
   // human base
-  humanBase = new Base('humans', 0x00ff00);
+  humanBase = new Base.Base('humans', 0x00ff00);
 
   humanBase.radius = 100;
   humanBase.model.position.set(
@@ -124,7 +121,7 @@ function init() {
   );
 
   for (let i = 0; i < 10; ++i) {
-    const h = new Human();
+    const h = new Human.Human();
     humanBase.addEntity(h);
     h.model.rotateY(Math.random() * 2 * Math.PI);
     h.model.translateX(5 + Math.random() * humanBase.radius);
@@ -154,22 +151,22 @@ function init() {
   scene.add( light );
 
   window.addEventListener( 'resize', onWindowResize, false );
-}
+};
 
 /**
  * Handle window resize event
  */
-function onWindowResize() {
+const onWindowResize = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
   renderer.setSize( window.innerWidth, window.innerHeight );
-}
+};
 
 /**
  * Animate function
  */
-function animate() {
+const animate = () => {
   requestAnimationFrame( animate );
 
   /*
@@ -179,12 +176,12 @@ function animate() {
   controls.update();
 
   render();
-}
+};
 
 /**
  * Render function
  */
-function render() {
+const render = () => {
   if (end === false ) {
     time += 0.01;
 
@@ -222,4 +219,10 @@ function render() {
   }
 
   renderer.render( scene, camera );
-}
+};
+
+
+init();
+// remove when using next line for animation loop (requestAnimationFrame)
+// render();
+animate();
