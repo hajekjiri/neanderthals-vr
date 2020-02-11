@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const https = require('https');
-const path = require('path');
 const app = express();
 const argv = require('yargs')
     .options({
@@ -27,7 +26,7 @@ if (argv.hasOwnProperty('port')) {
 }
 
 // check if project is built
-if (! fs.existsSync(path.join(__dirname, 'dist/neanderthals-vr.js'))) {
+if (! fs.existsSync(__dirname + '/dist/neanderthals-vr.js')) {
   console.log('Could not find dist/neanderthals-vr.js');
   console.log('Use one of the following commands to build the project');
   console.log('npm run build-dev #build for development');
@@ -35,8 +34,8 @@ if (! fs.existsSync(path.join(__dirname, 'dist/neanderthals-vr.js'))) {
   process.exit(1);
 }
 
-app.use('/', express.static(path.join(__dirname, 'dist')));
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/', express.static(__dirname + '/dist'));
+app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
