@@ -1,17 +1,20 @@
 const THREE = require('three');
-const OrbitControls =
-    require('three/examples/jsm/controls/OrbitControls.js');
+const VRButton = require('three/examples/jsm/webxr/VRButton');
+const UserRig = require('./UserRig');
+// const OrbitControls =
+//    require('three/examples/jsm/controls/OrbitControls.js');
 const Base = require('./simulation/models/Base');
 const Neanderthal = require('./simulation/models/Neanderthal');
 const Human = require('./simulation/models/Human');
 
 let camera;
-let controls;
+// let controls;
 let scene;
 let renderer;
 let textBox;
 let neanderthalBase;
 let humanBase;
+let userRig;
 
 let time = 0;
 let stop = 1;
@@ -32,16 +35,31 @@ const init = () => {
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
-  camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
+  // Add VR button.
+  document.body.appendChild(VRButton.VRButton.createButton(renderer));
+  renderer.xr.enabled = true;
+
+  camera = new THREE.OrthographicCamera(
+      window.innerWidth / -2,
+      window.innerWidth / 2,
+      window.innerHeight / -2,
+      window.innerHeight / 2,
       1,
-      1250,
+      1500,
   );
-  camera.position.set( 400, 200, 0 );
+
+  camera.position.set(0, 1.6, 1);
+
+  userRig = new UserRig.UserRig(camera, renderer.xr);
+  scene.add(userRig);
+
+  // adjust user's position
+  userRig.translateY(150);
+  userRig.rotateY(- Math.PI / 4);
+  userRig.translateZ(350);
 
   // controls
-  controls = new OrbitControls.MapControls( camera, renderer.domElement );
+  // controls = new OrbitControls.MapControls( camera, renderer.domElement );
 
   // call this only in static scenes (i.e., if there is no animation loop)
   // controls.addEventListener( 'change', render );
@@ -50,6 +68,7 @@ const init = () => {
    * an animation loop is required when
    *  either damping or auto-rotation are enabled
    */
+  /*
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
 
@@ -59,6 +78,7 @@ const init = () => {
   controls.maxDistance = 500;
 
   controls.maxPolarAngle = Math.PI / 2;
+  */
 
   // ground
   let geometry = new THREE.PlaneBufferGeometry(1000, 1000);
@@ -173,7 +193,7 @@ const animate = () => {
    * only required if controls.enableDamping = true,
    *  or if controls.autoRotate = true
    */
-  controls.update();
+  // controls.update();
 
   render();
 };
