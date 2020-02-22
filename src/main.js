@@ -9,6 +9,7 @@ const Entity = require('./simulation/models/Entity');
 const Environment = require('./simulation/Environment');
 const GuiParam = require('./simulation/GuiParameterMenu');
 const GuiVR = require('./simulation/GuiVR');
+const Simulation = require('./simulation/Simulation');
 
 let camera;
 
@@ -21,11 +22,8 @@ let renderer;
 let textBox;
 let userRig;
 let environment;
-
-let time = 0;
-let stop = 1;
-
-let end = false;
+let simulation;
+let clock;
 
 
 /**
@@ -75,6 +73,12 @@ let end = false;
   environment = new Environment.Environment();
   scene.add(environment);
 
+  simulation = new Simulation.Simulation(
+      neanderthalBase.entities,
+      humanBase.entities,
+      3,
+  );
+
   textBox = document.createElement('div');
   textBox.style.position = 'absolute';
   textBox.style.zIndex = 1;
@@ -101,6 +105,8 @@ let end = false;
   // set handler for mouse clicks
   window.onclick = onSelectStart;
   renderer.setAnimationLoop(render);
+
+  clock = new THREE.Clock();
 };
 
 /**
@@ -125,39 +131,28 @@ const animate = () => {
  * Render function
  */
 const render = () => {
-  if (end === false ) {
-    time += 0.01;
+  simulation.addDelta(clock.getDelta());
+  textBox.innerHTML =
+      `<span style="color: blue;">Neanderthal</span> population:
+        ${simulation.neanderthalAmt}<br>
+      <span style="color: #ffaa00">Human</span> population:
+        ${simulation.humanAmt}`;
 
-    if (time > stop) {
-      environment.neanderthalBase.update();
-      environment.humanBase.update();
-
-      textBox.innerHTML =
-          `<span style="color: blue;">Neanderthal</span> population:
-             ${environment.getNeanderthalPopulation()}<br>
-           <span style="color: #ffaa00">Human</span> population:
-             ${environment.getHumanPopulation()}`;
-
-      if (environment.getNeanderthalPopulation() == 0 ||
-          environment.getHumanPopulation() == 0) {
-        if (environment.getNeanderthalPopulation() == 0 &&
-            environment.getHumanPopulation() == 0 ) {
-          textBox.innerHTML += '<br>Both species went extinct.';
-        } else if (environment.getNeanderthalPopulation() == 0) {
-          textBox.innerHTML +=
-              '<br><span style="color: blue;">' +
-              'Neanderthals' +
-              '</span> went extinct.';
-        } else {
-          textBox.innerHTML +=
-              '<br><span style="color: #ffaa00">' +
-              'Humans' +
-              '</span> went extinct.';
-        }
-        end = true;
-      }
-
-      stop = time + 0.6;
+  if (simulation.neanderthalAmt == 0 ||
+      simulation.humanAmt == 0) {
+    if (simulation.neanderthalAmt == 0 &&
+        simulation.humanAmt == 0 ) {
+      textBox.innerHTML += '<br>Both species went extinct.';
+    } else if (simulation.neanderthalAmt == 0) {
+      textBox.innerHTML +=
+          '<br><span style="color: blue;">' +
+          'Neanderthals' +
+          '</span> went extinct.';
+    } else {
+      textBox.innerHTML +=
+          '<br><span style="color: #ffaa00">' +
+          'Humans' +
+          '</span> went extinct.';
     }
   }
 
