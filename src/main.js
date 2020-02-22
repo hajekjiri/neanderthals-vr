@@ -4,8 +4,8 @@ const UserRig = require('./UserRig');
 // const OrbitControls =
 //    require('three/examples/jsm/controls/OrbitControls.js');
 const Base = require('./simulation/models/Base');
-const Neanderthal = require('./simulation/models/Neanderthal');
-const Human = require('./simulation/models/Human');
+const Person = require('./simulation/models/Person');
+const Entity = require('./simulation/models/Entity');
 
 let camera;
 // let controls;
@@ -122,7 +122,7 @@ const init = () => {
   );
 
   for (let i = 0; i < 10; ++i) {
-    const n = new Neanderthal.Neanderthal();
+    const n = new Person.Person(Entity.TYPES['TYPE_NEANDERTHAL']);
     neanderthalBase.addEntity(n);
     n.model.rotateY(Math.random() * 2 * Math.PI);
     n.model.translateX(5 + Math.random() * neanderthalBase.radius);
@@ -141,7 +141,7 @@ const init = () => {
   );
 
   for (let i = 0; i < 10; ++i) {
-    const h = new Human.Human();
+    const h = new Person.Person(Entity.TYPES['TYPE_HUMAN']);
     humanBase.addEntity(h);
     h.model.rotateY(Math.random() * 2 * Math.PI);
     h.model.translateX(5 + Math.random() * humanBase.radius);
