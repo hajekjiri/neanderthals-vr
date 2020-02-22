@@ -25,7 +25,7 @@ class Person extends MovingEntity.MovingEntity {
    * Add default three model
    */
   addDefaultModel() {
-    if (this.type === Entity.TYPES['ENTITY_NEANDERTHAL']) {
+    if (this.type === Entity.TYPES['TYPE_NEANDERTHAL']) {
       const geometry = new THREE.BoxBufferGeometry(2, 10, 2);
       geometry.translate(0, 5, 0);
 
