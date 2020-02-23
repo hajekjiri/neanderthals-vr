@@ -6,6 +6,7 @@ const UserRig = require('./UserRig');
 const Base = require('./simulation/models/Base');
 const Person = require('./simulation/models/Person');
 const Entity = require('./simulation/models/Entity');
+const Environment = require('./simulation/Environment');
 
 let camera;
 // let controls;
@@ -15,6 +16,7 @@ let textBox;
 let neanderthalBase;
 let humanBase;
 let userRig;
+let land;
 
 let time = 0;
 let stop = 1;
@@ -25,7 +27,7 @@ let end = false;
 /**
  * Init function
  */
-const init = () => {
+  const init = () => {
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xcccccc );
   // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
@@ -84,7 +86,7 @@ const init = () => {
   let geometry = new THREE.PlaneBufferGeometry(1000, 1000);
   geometry.rotateX(-Math.PI / 2);
   let texture = new THREE.TextureLoader().load(
-      '/assets/textures/grass_grass_0125_01_s.jpg',
+      '/assets/textures/grass-meadow-green-juicy-53504.jpg',
   );
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
@@ -109,7 +111,12 @@ const init = () => {
         new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
     mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
+
+    //land = new Environment.Environment();
+    //scene.add(land);
+
   }
+
 
   // neanderthal base
   neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
