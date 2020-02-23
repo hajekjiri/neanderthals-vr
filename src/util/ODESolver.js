@@ -33,10 +33,22 @@ r: prey's growth rate
 k: prey's carrying capacity (nutrition value)
 */
 
-export class ODESolver{
+class ODESolver{
 
 
-  constructor(alpha, beta, h1, h2, d1, d2, f1, f2, r, k, c1 = 0, c2 = 0){
+  constructor(alpha=1, beta=1, h1=0.894334, h2=1, d1=0.1, d2=0.1, f1=0, f2=0, r=1, k=1, c1 = 0, c2 = 0){
+    this.alpha = alpha;
+    this.beta = beta;
+    this.h1 = h1;
+    this.h2 = h2;
+    this.d1 = d1;
+    this.d2 = d2;
+    this.f1 = f1;
+    this.f2 = f2;
+    this.r = r;
+    this.k = k;
+    this.c1 = c1;
+    this.c2 = c2;
 
     this.solver = new ODEX.Solver(3);
 
@@ -59,7 +71,24 @@ export class ODESolver{
     var initialX = initialPopulation[0];
     var initialY = initialPopulation[1];
     var initialZ = initialPopulation[2];
-    return this.solver.solve(this.ode(alpha, beta, h1, h2, d1, d2, f1, f2, r, k, c1, c2),0,[initialX, initialY, initialZ], endTime).y
+    return this.solver.solve(this.ode(this.alpha, this.beta, this.h1, this.h2,
+      this.d1, this.d2, this.f1, this.f2, this.r, this.k, this.c1, this.c2),
+      0,[initialX, initialY, initialZ], endTime).y;
   }
 
 }
+// default value, no fire use for either group
+/*
+uncomment this to see how it work:
+
+var solver = new ODESolver();
+var population;
+for (var time = 0; time <= 6000; time ++){
+  population = solver.solveODE([1,0.5,0.5],time)
+  console.log(Math.round(population[0]*1000),Math.round(population[1]*500),Math.round(population[2]*500))
+}
+*/
+
+module.exports = {
+  ODESolver,
+};
