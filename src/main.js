@@ -75,28 +75,6 @@ let end = false;
   environment = new Environment.Environment();
   scene.add(environment);
 
-  // controls
-  // controls = new OrbitControls.MapControls( camera, renderer.domElement );
-
-  // call this only in static scenes (i.e., if there is no animation loop)
-  // controls.addEventListener( 'change', render );
-
-  /*
-   * an animation loop is required when
-   *  either damping or auto-rotation are enabled
-   */
-  /*
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
-
-  controls.screenSpacePanning = false;
-
-  controls.minDistance = 0;
-  controls.maxDistance = 500;
-
-  controls.maxPolarAngle = Math.PI / 2;
-  */
-
   textBox = document.createElement('div');
   textBox.style.position = 'absolute';
   textBox.style.zIndex = 1;
@@ -140,13 +118,6 @@ const onWindowResize = () => {
  */
 const animate = () => {
   requestAnimationFrame( animate );
-
-  /*
-   * only required if controls.enableDamping = true,
-   *  or if controls.autoRotate = true
-   */
-  // controls.update();
-
   render();
 };
 
