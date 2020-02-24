@@ -1,6 +1,7 @@
 const Entity = require('./Entity.js');
 const MovingEntity = require('./MovingEntity.js');
 const THREE = require('three');
+const MODEL = require('./PersonModel.js');
 
 
 /**
@@ -26,25 +27,11 @@ class Person extends MovingEntity.MovingEntity {
    */
   addDefaultModel() {
     if (this.type === Entity.TYPES['TYPE_NEANDERTHAL']) {
-      const geometry = new THREE.BoxBufferGeometry(2, 10, 2);
-      geometry.translate(0, 5, 0);
-
-      const material =
-          new THREE.MeshPhongMaterial({color: 0x0000ff, flatShading: true});
-
-      const mesh = new THREE.Mesh(geometry, material);
-
-      this.model.add(mesh);
+      const neanModel = new MODEL.PersonModel(0x8C3320);
+      this.model.add(neanModel);
     } else {
-      const geometry = new THREE.BoxBufferGeometry(2, 10, 2);
-      geometry.translate(0, 5, 0);
-
-      const material =
-          new THREE.MeshPhongMaterial({color: 0xffff00, flatShading: true});
-
-      const mesh = new THREE.Mesh(geometry, material);
-
-      this.model.add(mesh);
+      const humanModel = new MODEL.PersonModel(0x326FC7);
+      this.model.add(humanModel);
     }
   }
 }

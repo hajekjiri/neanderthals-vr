@@ -58,7 +58,7 @@ class Environment extends THREE.Group {
       // neanderthal base
       neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
 
-      neanderthalBase.radius = 100;
+      neanderthalBase.radius = 250;
       neanderthalBase.model.position.set(
           50 + Math.random() * 150,
           1,
@@ -74,7 +74,7 @@ class Environment extends THREE.Group {
       // human base
       humanBase = new Base.Base('humans', 0x00ff00);
 
-      humanBase.radius = 100;
+      humanBase.radius = 250;
       humanBase.model.position.set(
           -(50 + Math.random() * 150),
           1,
