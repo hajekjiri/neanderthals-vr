@@ -27,7 +27,7 @@ class Environment extends THREE.Group {
       let geometry = new THREE.PlaneBufferGeometry(1000, 1000);
       geometry.rotateX(-Math.PI / 2);
       let texture = new THREE.TextureLoader().load(
-          '/assets/textures/grass-meadow-green-juicy-53504.jpg',
+          '/assets/textures/grass.jpg',
       );
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
