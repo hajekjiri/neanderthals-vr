@@ -1,8 +1,10 @@
+// Author: Woody
 // CSC 385 Computer Graphics
 // Version Winter 2020
 // Group Project Neanderthal VR
 // Class GUI: displaying a menu for the user to change the variables of
 // our differential equation that determines population numbers
+
 const THREE = require('three');
 const GuiVR = require('./GuiVR');
 const ODESolver = require('../util/ODESolver');

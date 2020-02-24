@@ -1,3 +1,9 @@
+// Author: Woody
+// CSC 385 Computer Graphics
+// Version Winter 2020
+// Group Project Neanderthal VR
+// Environment Class: tracking and manipulating environment as well as both populations
+
 const THREE = require('three');
 const VRButton = require('three/examples/jsm/webxr/VRButton');
 const UserRig = require('../UserRig');

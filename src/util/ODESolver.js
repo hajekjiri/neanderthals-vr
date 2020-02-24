@@ -1,3 +1,15 @@
+// Author: Woody
+// CSC 385 Computer Graphics
+// Version Winter 2020
+// Group Project Neanderthal VR
+// ODESolver: gives the population in times t (year) according to the differential
+// equation provided by [1]
+//
+//[1] Goldfield, Anna E., et al. “Modeling the Role of Fire and Cooking in the
+// Competitive Exclusion of Neanderthals.” Journal of Human Evolution, vol. 124,
+// Nov. 2018, pp. 91–104. ScienceDirect, doi:10.1016/j.jhevol.2018.07.006.
+
+
 const ODEX = require('odex');
 
 /*
