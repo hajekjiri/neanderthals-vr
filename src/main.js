@@ -129,7 +129,8 @@ const animate = () => {
 const render = () => {
   simulation.addDelta(clock.getDelta());
   textBox.innerHTML =
-      `<span style="color: blue;">Neanderthal</span> population:
+      `Time passed: ${simulation.timestamp} years<br>
+      <span style="color: blue;">Neanderthal</span> population:
         ${simulation.neanderthalAmt}<br>
       <span style="color: #ffaa00">Human</span> population:
         ${simulation.humanAmt}`;
