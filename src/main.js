@@ -7,8 +7,14 @@ const Base = require('./simulation/models/Base');
 const Person = require('./simulation/models/Person');
 const Entity = require('./simulation/models/Entity');
 const Environment = require('./simulation/Environment');
+const GuiParam = require('./simulation/GuiParameterMenu');
+const GuiVR = require('./simulation/GuiVR');
 
 let camera;
+
+// parameter control menu
+let paramMenu;
+
 // let controls;
 let scene;
 let renderer;
@@ -47,10 +53,17 @@ let end = false;
       window.innerHeight / -2,
       window.innerHeight / 2,
       1,
-      1500,
+      1600,
   );
 
   camera.position.set(0, 1.6, 1);
+
+  // add parameter control menu
+  paramMenu = new GuiParam.GuiParamMenu();
+  paramMenu.position.x = 3.5;
+  paramMenu.position.y = -1;
+  paramMenu.position.z = -2;
+  camera.add(paramMenu);
 
   userRig = new UserRig.UserRig(camera, renderer.xr);
   scene.add(userRig);
@@ -175,9 +188,15 @@ let end = false;
 
   // lights
   const light = new THREE.AmbientLight( 0xaaaaaa );
-  scene.add( light );
+  scene.add(light);
 
+  // Add VR button
+  document.body.appendChild(VRButton.createButton(renderer));
   window.addEventListener( 'resize', onWindowResize, false );
+
+  // set handler for mouse clicks
+  window.onclick = onSelectStart;
+  renderer.setAnimationLoop(render);
 };
 
 /**
@@ -248,6 +267,24 @@ const render = () => {
   renderer.render( scene, camera );
 };
 
+// Event handler for controller clicks when in VR mode, and for mouse
+// clicks outside of VR mode
+function onSelectStart(event){
+
+    if (event instanceof MouseEvent && !renderer.xr.isPresenting()){
+      // Handle mouse click outside of VR.
+      // Determine screen coordinates of click.
+      var mouse = new THREE.Vector2();
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+      // Create raycaster from the camera through the click into the scene.
+      var raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+
+      // Register the click into the GUI.
+      GuiVR.intersectObjects(raycaster);
+    }
+}
 
 init();
 // remove when using next line for animation loop (requestAnimationFrame)

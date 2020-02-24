@@ -36,7 +36,12 @@ k: prey's carrying capacity (nutrition value)
 class ODESolver{
 
 
-  constructor(alpha=1, beta=1, h1=0.894334, h2=1, d1=0.1, d2=0.1, f1=0, f2=0, r=1, k=1, c1 = 0, c2 = 0){
+  constructor(initialPopulation, alpha=1, beta=1, h1=0.894334, h2=1, d1=0.1, d2=0.1, f1=0, f2=0, r=1, k=1, c1 = 0, c2 = 0){
+
+    console.log(f1);
+    console.log(f2);
+
+    this.population = initialPopulation;
     this.alpha = alpha;
     this.beta = beta;
     this.h1 = h1;
@@ -67,27 +72,32 @@ class ODESolver{
     };
   }
 
-  solveODE(initialPopulation, endTime){
-    var initialX = initialPopulation[0];
-    var initialY = initialPopulation[1];
-    var initialZ = initialPopulation[2];
-    return this.solver.solve(this.ode(this.alpha, this.beta, this.h1, this.h2,
-      this.d1, this.d2, this.f1, this.f2, this.r, this.k, this.c1, this.c2),
-      0,[initialX, initialY, initialZ], endTime).y;
+  solveODE(endTime){
+    var initialX = this.population[0];
+    var initialY = this.population[1];
+    var initialZ = this.population[2];
+    var initialPopulationDensity = [1,1,1];
+    var populationDensity = this.solver.solve(this.ode(this.alpha, this.beta,
+      this.h1, this.h2, this.d1, this.d2, this.f1, this.f2, this.r, this.k, this.c1,
+      this.c2),0,initialPopulationDensity, endTime).y;
+    return [
+      Math.round(populationDensity[0]*initialX),
+      Math.round(populationDensity[1]*initialY),
+      Math.round(populationDensity[2]*initialZ)]
   }
 
 }
-// default value, no fire use for either group
-/*
-uncomment this to see how it work:
 
+
+// default value, no fire use for either group
 var solver = new ODESolver();
-var population;
+//uncomment this to see how it work:
+var solverWithFireUse = new ODESolver([1000,500,500],1,1,0.894334,1,0.1,0.1,0.03,0,1,1);
 for (var time = 0; time <= 6000; time ++){
-  population = solver.solveODE([1,0.5,0.5],time)
-  console.log(Math.round(population[0]*1000),Math.round(population[1]*500),Math.round(population[2]*500))
+  population = solverWithFireUse.solveODE(time);
+  console.log(population[0],population[1],population[2]);
 }
-*/
+
 
 module.exports = {
   ODESolver,
