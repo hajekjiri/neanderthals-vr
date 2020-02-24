@@ -99,7 +99,7 @@ const init = () => {
   window.addEventListener( 'resize', onWindowResize, false );
 
   // set handler for mouse clicks
-  window.onclick = onSelectStart;
+  //window.onclick = onSelectStart;
   renderer.setAnimationLoop(render);
 
   clock = new THREE.Clock();
