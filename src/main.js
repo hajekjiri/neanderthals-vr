@@ -27,7 +27,7 @@ let clock;
 /**
  * Init function
  */
-  const init = () => {
+const init = () => {
   scene = new THREE.Scene();
   scene.background = new THREE.Color( 0xcccccc );
   // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
