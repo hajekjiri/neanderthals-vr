@@ -31,7 +31,7 @@ class Environment extends THREE.Group {
       );
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(10, 10);
+      texture.repeat.set(4,4);
       let material = new THREE.MeshPhongMaterial({map: texture});
       let mesh = new THREE.Mesh(geometry, material);
       this.add(mesh);
