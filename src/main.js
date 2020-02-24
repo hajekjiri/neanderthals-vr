@@ -1,8 +1,6 @@
 const THREE = require('three');
 const VRButton = require('three/examples/jsm/webxr/VRButton');
 const UserRig = require('./UserRig');
-// const OrbitControls =
-//    require('three/examples/jsm/controls/OrbitControls.js');
 const Base = require('./simulation/models/Base');
 const Person = require('./simulation/models/Person');
 const Entity = require('./simulation/models/Entity');
