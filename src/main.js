@@ -193,8 +193,6 @@ let end = false;
   const light = new THREE.AmbientLight( 0xaaaaaa );
   scene.add(light);
 
-  // Add VR button
-  document.body.appendChild(VRButton.VRButton.createButton(renderer));
   window.addEventListener( 'resize', onWindowResize, false );
 
   // set handler for mouse clicks
