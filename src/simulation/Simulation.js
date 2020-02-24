@@ -1,18 +1,31 @@
+const ODESolver = require('../util/ODESolver');
+
+
 /**
  * Simulation wrapper
  */
 class Simulation {
   /**
    * Constructor
-   * @param {Array} neanderthals Array of neanderthals
-   * @param {Array} humans Array of humans
+   * @param {number} initialPrey Initial amount of prey
+   * @param {Array} neanderthals Array of neanderthal entities
+   * @param {Array} humans Array of human entities
    * @param {number} secondsPerUnit Seconds per 1 time unit
    */
-  constructor(neanderthals, humans, secondsPerUnit) {
+  constructor(initialPrey, neanderthals, humans, secondsPerUnit) {
+    this.initialPrey = initialPrey;
+
     this.neanderthals = neanderthals;
+    this.initialNeanderthals = this.neanderthals.length;
+    this.neanderthalAmt = this.initialNeanderthals;
+
     this.humans = humans;
-    this.neanderthalAmt = this.neanderthals.length;
-    this.humanAmt = this.humans.length;
+    this.initialHumans = this.humans.length;
+    this.humanAmt = this.initialHumans;
+
+    this.solver = new ODESolver.ODESolver(
+        [this.initialPrey, this.initialNeanderthals, this.initialHumans]);
+
     this.secondsPerUnit = secondsPerUnit;
 
     // amt of time units from the start of the simulation
@@ -27,12 +40,9 @@ class Simulation {
   advance(time) {
     this.timestamp += time;
 
-    // TODO - remove loop when implemented with diff eqns
-    for (let i = 0; i < time; ++i) {
-      this.updatePopulationNumbers();
-    }
+    this.updatePopulationNumbers();
 
-    // randomly determine amount of deaths
+    // determine amount of deaths
     const neanderthalDeathCount =
         this.neanderthals.length - this.neanderthalAmt;
     const humanDeathCount = this.humans.length - this.humanAmt;
@@ -72,12 +82,13 @@ class Simulation {
       return false;
     }
 
-    this.neanderthalAmt -= parseInt(Math.random() * 4);
+    const population = this.solver.solveODE(this.timestamp);
+    [this.preyAmt, this.humanAmt, this.neanderthalAmt] = population;
+
     if (this.neanderthalAmt < 0) {
       this.neanderthalAmt = 0;
     }
 
-    this.humanAmt -= parseInt(Math.random() * 4);
     if (this.humanAmt < 0) {
       this.humanAmt = 0;
     }

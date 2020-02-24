@@ -74,9 +74,10 @@ let clock;
   scene.add(environment);
 
   simulation = new Simulation.Simulation(
-      neanderthalBase.entities,
-      humanBase.entities,
-      3,
+      1000,
+      environment.neanderthalBase.entities,
+      environment.humanBase.entities,
+      0.001,
   );
 
   textBox = document.createElement('div');
