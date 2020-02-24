@@ -65,7 +65,7 @@ class Environment extends THREE.Group {
           50 + Math.random() * 150,
       );
 
-      for (let i = 0; i < 10; ++i) {
+      for (let i = 0; i < 100; ++i) {
         const n = new Person.Person(Entity.TYPES['TYPE_NEANDERTHAL']);
         neanderthalBase.addEntity(n);
       }
@@ -81,7 +81,7 @@ class Environment extends THREE.Group {
           -(50 + Math.random() * 150),
       );
 
-      for (let i = 0; i < 10; ++i) {
+      for (let i = 0; i < 100; ++i) {
         const h = new Person.Person(Entity.TYPES['TYPE_HUMAN']);
         humanBase.addEntity(h);
       }

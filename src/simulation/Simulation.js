@@ -15,6 +15,7 @@ class Simulation {
    */
   constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit) {
     this.initialPrey = initialPrey;
+    this.preyAmt = this.initialPrey;
 
     this.neanderthalBase = neanderthalBase;
     this.neanderthals = this.neanderthalBase.entities;
@@ -96,6 +97,10 @@ class Simulation {
     const population = this.solver.solveODE(this.timestamp);
     [this.preyAmt, this.humanAmt, this.neanderthalAmt] = population;
 
+    if (this.preyAmt < 0) {
+      this.preyAmt = 0;
+    }
+
     if (this.neanderthalAmt < 0) {
       this.neanderthalAmt = 0;
     }
@@ -117,6 +122,15 @@ class Simulation {
       this.delta = 0;
       this.advanceByOne();
     }
+  }
+
+  /**
+   * Reset the simulation
+   */
+  reset() {
+    this.timestamp = 0;
+    this.delta = 0;
+    this.advance(0);
   }
 }
 
