@@ -68,9 +68,6 @@ class Environment extends THREE.Group {
       for (let i = 0; i < 10; ++i) {
         const n = new Person.Person(Entity.TYPES['TYPE_NEANDERTHAL']);
         neanderthalBase.addEntity(n);
-        n.model.rotateY(Math.random() * 2 * Math.PI);
-        n.model.translateX(5 + Math.random() * neanderthalBase.radius);
-        n.model.rotation.y = 0;
       }
       this.add(neanderthalBase.model);
 
@@ -87,9 +84,6 @@ class Environment extends THREE.Group {
       for (let i = 0; i < 10; ++i) {
         const h = new Person.Person(Entity.TYPES['TYPE_HUMAN']);
         humanBase.addEntity(h);
-        h.model.rotateY(Math.random() * 2 * Math.PI);
-        h.model.translateX(5 + Math.random() * humanBase.radius);
-        h.model.rotation.y = 0;
       }
       this.add(humanBase.model);
 

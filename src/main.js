@@ -70,9 +70,9 @@ const init = () => {
 
   simulation = new Simulation.Simulation(
       1000,
-      environment.neanderthalBase.entities,
-      environment.humanBase.entities,
-      0.001,
+      environment.neanderthalBase,
+      environment.humanBase,
+      0.1,
   );
 
   textBox = document.createElement('div');

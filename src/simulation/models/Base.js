@@ -36,6 +36,9 @@ class Base extends Entity.Entity {
   addEntity(entity) {
     this.entities.push(entity);
     this.model.add(entity.model);
+    entity.model.rotateY(Math.random() * 2 * Math.PI);
+    entity.model.translateX(5 + Math.random() * this.radius);
+    entity.model.rotation.y = 0;
   }
 }
 

@@ -1,5 +1,6 @@
 const ODESolver = require('../util/ODESolver');
-
+const Person = require('./models/Person');
+const Entity = require('./models/Entity');
 
 /**
  * Simulation wrapper
@@ -8,18 +9,20 @@ class Simulation {
   /**
    * Constructor
    * @param {number} initialPrey Initial amount of prey
-   * @param {Array} neanderthals Array of neanderthal entities
-   * @param {Array} humans Array of human entities
+   * @param {Base} neanderthalBase Neanderthal base
+   * @param {Base} humanBase Human base
    * @param {number} secondsPerUnit Seconds per 1 time unit
    */
-  constructor(initialPrey, neanderthals, humans, secondsPerUnit) {
+  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit) {
     this.initialPrey = initialPrey;
 
-    this.neanderthals = neanderthals;
+    this.neanderthalBase = neanderthalBase;
+    this.neanderthals = this.neanderthalBase.entities;
     this.initialNeanderthals = this.neanderthals.length;
     this.neanderthalAmt = this.initialNeanderthals;
 
-    this.humans = humans;
+    this.humanBase = humanBase;
+    this.humans = this.humanBase.entities;
     this.initialHumans = this.humans.length;
     this.humanAmt = this.initialHumans;
 
@@ -42,23 +45,31 @@ class Simulation {
 
     this.updatePopulationNumbers();
 
-    // determine amount of deaths
-    const neanderthalDeathCount =
-        this.neanderthals.length - this.neanderthalAmt;
-    const humanDeathCount = this.humans.length - this.humanAmt;
-
-    for (let i = 0; i < neanderthalDeathCount; ++i) {
-      const target = Math.round(Math.random() * (this.neanderthals.length - 1));
-      this.neanderthals[target].model
-          .parent.remove(this.neanderthals[target].model);
-      this.neanderthals.splice(target, 1);
+    const deltaNeanderthals = this.neanderthalAmt - this.neanderthals.length;
+    for (let i = 0; i < Math.abs(deltaNeanderthals); ++i) {
+      if (deltaNeanderthals > 0) {
+        const n = new Person.Person(Entity.TYPES['TYPE_NEANDERTHAL']);
+        this.neanderthalBase.addEntity(n);
+      } else {
+        const target =
+            Math.round(Math.random() * (this.neanderthals.length - 1));
+        this.neanderthals[target].model
+            .parent.remove(this.neanderthals[target].model);
+        this.neanderthals.splice(target, 1);
+      }
     }
 
-    for (let i = 0; i < humanDeathCount; ++i) {
-      const target = Math.round(Math.random() * (this.humans.length - 1));
-      this.humans[target].model
-          .parent.remove(this.humans[target].model);
-      this.humans.splice(target, 1);
+    const deltaHumans = this.humanAmt - this.humans.length;
+    for (let i = 0; i < Math.abs(deltaHumans); ++i) {
+      if (deltaHumans > 0) {
+        const n = new Person.Person(Entity.TYPES['TYPE_HUMAN']);
+        this.humanBase.addEntity(n);
+      } else {
+        const target = Math.round(Math.random() * (this.humans.length - 1));
+        this.humans[target].model
+            .parent.remove(this.humans[target].model);
+        this.humans.splice(target, 1);
+      }
     }
   }
 
