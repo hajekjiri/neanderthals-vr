@@ -37,31 +37,6 @@ class Base extends Entity.Entity {
     this.entities.push(entity);
     this.model.add(entity.model);
   }
-
-  /**
-   * Update base
-   * @return {bool} True/false => whether more updates are required
-   */
-  update() {
-    if (this.entities.length == 0) {
-      return false;
-    }
-
-    // randomly determine amount of deaths
-    let deathCount = parseInt(Math.random() * 4);
-
-    if (deathCount > this.entities.length) {
-      deathCount = this.entities.length;
-    }
-
-    for (let i = 0; i < deathCount; ++i) {
-      const target = parseInt(Math.random() * (this.entities.length - 1));
-      this.model.remove(this.entities[target].model);
-      this.entities.splice(target, 1);
-    }
-
-    return true;
-  }
 }
 
 module.exports = {
