@@ -27,10 +27,10 @@ class Person extends MovingEntity.MovingEntity {
    */
   addDefaultModel() {
     if (this.type === Entity.TYPES['TYPE_NEANDERTHAL']) {
-      const neanModel = new MODEL.PersonModel(0x8C3320);
+      const neanModel = new MODEL.PersonModel(0x326FC7);
       this.model.add(neanModel);
     } else {
-      const humanModel = new MODEL.PersonModel(0x326FC7);
+      const humanModel = new MODEL.PersonModel(0x8C3320);
       this.model.add(humanModel);
     }
   }
