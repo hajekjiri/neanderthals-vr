@@ -155,24 +155,26 @@ const render = () => {
   renderer.render( scene, camera );
 };
 
-// Event handler for controller clicks when in VR mode, and for mouse
-// clicks outside of VR mode
-function onSelectStart(event){
+/**
+ * Event handler for controller clicks when in VR mode, and for mouse
+ *  clicks outside of VR mode
+ * @param {*} event Event object
+ */
+const onSelectStart = (event) => {
+  if (event instanceof MouseEvent && !renderer.xr.isPresenting()) {
+    // Handle mouse click outside of VR.
+    // Determine screen coordinates of click.
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    // Create raycaster from the camera through the click into the scene.
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
 
-    if (event instanceof MouseEvent && !renderer.xr.isPresenting()){
-      // Handle mouse click outside of VR.
-      // Determine screen coordinates of click.
-      var mouse = new THREE.Vector2();
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-      // Create raycaster from the camera through the click into the scene.
-      var raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(mouse, camera);
-
-      // Register the click into the GUI.
-      GuiVR.intersectObjects(raycaster);
-    }
-}
+    // Register the click into the GUI.
+    GuiVR.intersectObjects(raycaster);
+  }
+};
 
 init();
 // remove when using next line for animation loop (requestAnimationFrame)
