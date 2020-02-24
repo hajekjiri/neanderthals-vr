@@ -88,7 +88,7 @@ class ODESolver{
 
 }
 
-
+/*
 // default value, no fire use for either group
 var solver = new ODESolver();
 //uncomment this to see how it work:
@@ -97,7 +97,7 @@ for (var time = 0; time <= 6000; time ++){
   population = solverWithFireUse.solveODE(time);
   console.log(population[0],population[1],population[2]);
 }
-
+*/
 
 module.exports = {
   ODESolver,

@@ -19,10 +19,8 @@ let paramMenu;
 let scene;
 let renderer;
 let textBox;
-let neanderthalBase;
-let humanBase;
 let userRig;
-let land;
+let environment;
 
 let time = 0;
 let stop = 1;
@@ -73,6 +71,10 @@ let end = false;
   userRig.rotateY(- Math.PI / 4);
   userRig.translateZ(350);
 
+  // initialize the environment
+  environment = new Environment.Environment();
+  scene.add(environment);
+
   // controls
   // controls = new OrbitControls.MapControls( camera, renderer.domElement );
 
@@ -94,7 +96,7 @@ let end = false;
 
   controls.maxPolarAngle = Math.PI / 2;
   */
-
+/*
   // ground
   let geometry = new THREE.PlaneBufferGeometry(1000, 1000);
   geometry.rotateX(-Math.PI / 2);
@@ -168,6 +170,7 @@ let end = false;
     h.model.rotation.y = 0;
   }
   scene.add(humanBase.model);
+  */
 
   textBox = document.createElement('div');
   textBox.style.position = 'absolute';
@@ -179,9 +182,9 @@ let end = false;
   textBox.style.padding = '5px';
   textBox.innerHTML =
       `<span style="color: blue;">Neanderthal</span> population:
-         ${neanderthalBase.entities.length}<br>
+         ${environment.getNeanderthalPopulation()}<br>
        <span style="color: #ffaa00">Human</span> population:
-         ${humanBase.entities.length}`;
+         ${environment.getHumanPopulation()}`;
   textBox.style.top = '20px';
   textBox.style.left = '20px';
   document.body.appendChild(textBox);
@@ -191,7 +194,7 @@ let end = false;
   scene.add(light);
 
   // Add VR button
-  document.body.appendChild(VRButton.createButton(renderer));
+  document.body.appendChild(VRButton.VRButton.createButton(renderer));
   window.addEventListener( 'resize', onWindowResize, false );
 
   // set handler for mouse clicks
@@ -232,21 +235,21 @@ const render = () => {
     time += 0.01;
 
     if (time > stop) {
-      neanderthalBase.update();
-      humanBase.update();
+      environment.neanderthalBase.update();
+      environment.humanBase.update();
 
       textBox.innerHTML =
           `<span style="color: blue;">Neanderthal</span> population:
-             ${neanderthalBase.entities.length}<br>
+             ${environment.getNeanderthalPopulation()}<br>
            <span style="color: #ffaa00">Human</span> population:
-             ${humanBase.entities.length}`;
+             ${environment.getHumanPopulation()}`;
 
-      if (neanderthalBase.entities.length == 0 ||
-          humanBase.entities.length == 0) {
-        if (neanderthalBase.entities.length == 0 &&
-            humanBase.entities.length == 0 ) {
+      if (environment.getNeanderthalPopulation() == 0 ||
+          environment.getHumanPopulation() == 0) {
+        if (environment.getNeanderthalPopulation() == 0 &&
+            environment.getHumanPopulation() == 0 ) {
           textBox.innerHTML += '<br>Both species went extinct.';
-        } else if (neanderthalBase.entities.length == 0) {
+        } else if (environment.getNeanderthalPopulation() == 0) {
           textBox.innerHTML +=
               '<br><span style="color: blue;">' +
               'Neanderthals' +
