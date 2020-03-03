@@ -99,7 +99,7 @@ const init = () => {
   window.addEventListener( 'resize', onWindowResize, false );
 
   // set handler for mouse clicks
-  //window.onclick = onSelectStart;
+  window.onclick = onSelectStart;
   renderer.setAnimationLoop(render);
 
   clock = new THREE.Clock();
@@ -162,7 +162,7 @@ const render = () => {
  * @param {*} event Event object
  */
 const onSelectStart = (event) => {
-  if (event instanceof MouseEvent && !renderer.xr.isPresenting()) {
+  if (event instanceof MouseEvent && !renderer.xr.isPresenting) {
     // Handle mouse click outside of VR.
     // Determine screen coordinates of click.
     const mouse = new THREE.Vector2();

@@ -17,7 +17,7 @@ function intersectObjects(raycaster){
 
   var intersections = raycaster.intersectObjects(colliders);
 
-  if(intersection.length > 0){
+  if(intersections.length > 0){
     var intersection = intersections[0];
     var object = intersection.object;
     for (var i = 0; i < guiElements.length; i++){
