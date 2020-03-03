@@ -111,7 +111,6 @@ const init = () => {
 const onWindowResize = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
   renderer.setSize( window.innerWidth, window.innerHeight );
 };
 
@@ -128,6 +127,7 @@ const animate = () => {
  */
 const render = () => {
   simulation.addDelta(clock.getDelta());
+  simulation.updateParamMenu(paramMenu);
   textBox.innerHTML =
       `Time passed: ${simulation.timestamp} years<br>
       <span style="color: blue;">Neanderthal</span> population:

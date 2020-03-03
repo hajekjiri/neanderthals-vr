@@ -13,7 +13,7 @@ class Simulation {
    * @param {Base} humanBase Human base
    * @param {number} secondsPerUnit Seconds per 1 time unit
    */
-  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit) {
+  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit, paramMenu) {
     this.initialPrey = initialPrey;
     this.preyAmt = this.initialPrey;
 
@@ -35,6 +35,22 @@ class Simulation {
     // amt of time units from the start of the simulation
     this.timestamp = 0;
     this.delta = 0;
+
+    this.paramMenu = paramMenu;
+  }
+
+  /**
+  * Update paramter menu
+  */
+  updateParamMenu(newMenu){
+    this.paramMenu = newMenu;
+  }
+
+  /**
+  * Update ode solver to match the parameters on the menu
+  */
+  updateODESolver(){
+    this.solver = this.paramMenu.updateParameter([this.initialPrey, this.initialNeanderthals, this.initialHumans]);
   }
 
   /**
@@ -83,12 +99,14 @@ class Simulation {
     this.advance(1);
   }
 
+
   /**
    * Update population numbers
    * @return {boolean} Whether the numbers were updated or not
    *     (fails if one of the species already went extinct)
    */
   updatePopulationNumbers() {
+    this.updateODESolver();
     // calculate new population numbers using the diff eqn solver
     if (this.neanderthalAmt === 0 || this.humanAmt === 0) {
       return false;
