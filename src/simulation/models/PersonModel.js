@@ -7,7 +7,7 @@ class PersonModel extends THREE.Group{
     super();
 
     var material = new THREE.MeshPhongMaterial({color:color});
-
+/*
     var hairs = new THREE.Group();
     CustomSinCurve.prototype = Object.create(THREE.Curve.prototype);
     CustomSinCurve.prototype.constructor = CustomSinCurve;
@@ -44,9 +44,9 @@ class PersonModel extends THREE.Group{
       hairs.add(hair);
     }
     this.add(hairs)
+*/
 
-
-    var headGeo = new THREE.SphereGeometry(0.15,32,32);
+    var headGeo = new THREE.SphereGeometry(0.15,8,8);
     var head = new THREE.Mesh(headGeo, material);
     head.geometry.center();
     head.position.y = 2;
