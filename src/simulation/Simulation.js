@@ -99,6 +99,7 @@ class Simulation {
     this.updateODESolver();
     // calculate new population numbers using the diff eqn solver
     if (this.neanderthalAmt === 0 || this.humanAmt === 0) {
+      this.status = this.STATUS['PAUSED'];
       return false;
     }
 
