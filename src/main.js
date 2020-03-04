@@ -57,14 +57,15 @@ const init = () => {
   scene.add(userRig);
 
   // adjust user's position
-  userRig.translateY(150);
-  userRig.rotateY(- Math.PI / 4);
-  userRig.translateZ(350);
+  userRig.translateZ(200);
+
+  userRig.add(paramMenu);
 
   // initialize the environment
-  environment = new Environment.Environment();
+  environment = new Environment.Environment(100, 100);
+  environment.rotateX(Math.PI / 2);
+  //environment.translateY(-100);
   scene.add(environment);
-
   simulation = new Simulation.Simulation(
       1000,
       environment.neanderthalBase,
@@ -125,6 +126,7 @@ const animate = () => {
 const render = () => {
   simulation.addDelta(clock.getDelta());
   simulation.updateParamMenu(paramMenu);
+
   textBox.innerHTML =
       `Time passed: ${simulation.timestamp} years<br>
       <span style="color: blue;">Neanderthal</span> population:
