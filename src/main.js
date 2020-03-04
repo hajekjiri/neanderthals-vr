@@ -49,10 +49,9 @@ const init = () => {
 
   // add parameter control menu
   paramMenu = new GuiParam.GuiParamMenu();
-  paramMenu.position.x = 3.5;
-  paramMenu.position.y = 1;
-  paramMenu.position.z = -2;
-  camera.add(paramMenu);
+  paramMenu.rotateY(-Math.PI / 3);
+  paramMenu.translateZ(-1);
+  paramMenu.translateY(1.6);
 
   userRig = new UserRig.UserRig(camera, renderer.xr);
   scene.add(userRig);
