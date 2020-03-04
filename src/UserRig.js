@@ -1,4 +1,5 @@
 const THREE = require('three');
+const GUIVR = require('./simulation/GuiVR.js');
 
 /**
  * Userrig object wrapper
@@ -67,7 +68,7 @@ class UserRig extends THREE.Group {
    * @param {*} event Event object
    */
   onSelectStartVR(event) {
-    if (!(event instanceof MouseEvent) && this.xr.isPresenting()) {
+    if (!(event instanceof MouseEvent) && this.xr.isPresenting) {
       // Handle controller click in VR.
 
       // Retrieve the pointer object.
@@ -97,7 +98,7 @@ class UserRig extends THREE.Group {
    * @param {*} event Event object
    */
   onSelectEndVR(event) {
-    if (!(event instanceof MouseEvent) && this.xr.isPresenting()) {
+    if (!(event instanceof MouseEvent) && this.xr.isPresenting) {
       const controller = event.target;
 
       for (let i = 0; i < this.controllers.length; i++) {
