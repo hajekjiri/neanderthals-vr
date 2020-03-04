@@ -65,10 +65,10 @@ class GuiVRButton extends THREE.Group {
     	this.updateCallback(this.val);
 
     	this.w = 1;
-    	this.h = 0.2;
+        this.h = 0.1;
     	// Create canvas that will display the button.
     	this.ctx = document.createElement('canvas').getContext('2d');
-    	this.ctx.canvas.width = 512;
+        this.ctx.canvas.width = 650;
     	this.ctx.canvas.height = Math.floor(this.ctx.canvas.width * this.h / this.w);
     	// Create texture from canvas.
     	this.texture = new THREE.CanvasTexture(this.ctx.canvas);
