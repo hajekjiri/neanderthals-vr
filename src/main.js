@@ -38,13 +38,11 @@ const init = () => {
   document.body.appendChild(VRButton.VRButton.createButton(renderer));
   renderer.xr.enabled = true;
 
-  camera = new THREE.OrthographicCamera(
-      window.innerWidth / -2,
-      window.innerWidth / 2,
-      window.innerHeight / -2,
-      window.innerHeight / 2,
+  camera = new THREE.PerspectiveCamera(
+      65,
+      window.innerWidth / window.innerHeight,
       1,
-      1600,
+      1000,
   );
 
   camera.position.set(0, 1.6, 1);
