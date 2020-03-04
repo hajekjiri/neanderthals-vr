@@ -49,10 +49,6 @@ class ODESolver{
 
 
   constructor(initialPopulation, alpha=1, beta=1, h1=0.894334, h2=1, d1=0.1, d2=0.1, f1=0, f2=0, r=1, k=1, c1 = 0, c2 = 0){
-
-    console.log(f1);
-    console.log(f2);
-
     this.population = initialPopulation;
     this.alpha = alpha;
     this.beta = beta;
