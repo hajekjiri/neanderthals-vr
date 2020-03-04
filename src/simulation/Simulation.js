@@ -48,13 +48,6 @@ class Simulation {
   }
 
   /**
-  * Update paramter menu
-  */
-  updateParamMenu(newMenu){
-    this.paramMenu = newMenu;
-  }
-
-  /**
   * Update ode solver to match the parameters on the menu
   */ updateODESolver(){
     this.solver = this.paramMenu.updateParameter([this.initialPrey, this.initialNeanderthals, this.initialHumans]);
@@ -96,7 +89,6 @@ class Simulation {
   advanceByOne() {
     this.advance(1);
   }
-
 
   /**
    * Update population numbers

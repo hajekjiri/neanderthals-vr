@@ -127,7 +127,6 @@ const animate = () => {
  */
 const render = () => {
   simulation.addDelta(clock.getDelta());
-  simulation.updateParamMenu(paramMenu);
 
   textBox.innerHTML =
       `Time passed: ${simulation.timestamp} years<br>
