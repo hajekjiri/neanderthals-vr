@@ -1,7 +1,6 @@
 const Entity = require('./Entity.js');
 const MovingEntity = require('./MovingEntity.js');
 const THREE = require('three');
-const MODEL = require('./PersonModel.js');
 
 
 /**
