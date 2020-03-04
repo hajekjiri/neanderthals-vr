@@ -13,30 +13,38 @@ class Simulation {
    * @param {Base} humanBase Human base
    * @param {number} secondsPerUnit Seconds per 1 time unit
    */
-  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit, paramMenu) {
+  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit, step, paramMenu) {
     this.initialPrey = initialPrey;
     this.preyAmt = this.initialPrey;
 
     this.neanderthalBase = neanderthalBase;
-    this.neanderthals = this.neanderthalBase.entities;
-    this.initialNeanderthals = this.neanderthals.length;
+    this.neanderthals = this.neanderthalBase;
+    this.initialNeanderthals = this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
     this.neanderthalAmt = this.initialNeanderthals;
 
     this.humanBase = humanBase;
-    this.humans = this.humanBase.entities;
-    this.initialHumans = this.humans.length;
+    this.humans = this.humanBase;
+    this.initialHumans = this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
     this.humanAmt = this.initialHumans;
 
     this.solver = new ODESolver.ODESolver(
         [this.initialPrey, this.initialNeanderthals, this.initialHumans]);
 
     this.secondsPerUnit = secondsPerUnit;
+    this.step = step;
 
     // amt of time units from the start of the simulation
     this.timestamp = 0;
     this.delta = 0;
 
     this.paramMenu = paramMenu;
+
+    this.STATUS = {
+      'PAUSED': 0,
+      'RUNNING': 1,
+    };
+
+    this.status = this.STATUS['RUNNING'];
   }
 
   /**
@@ -48,8 +56,7 @@ class Simulation {
 
   /**
   * Update ode solver to match the parameters on the menu
-  */
-  updateODESolver(){
+  */ updateODESolver(){
     this.solver = this.paramMenu.updateParameter([this.initialPrey, this.initialNeanderthals, this.initialHumans]);
   }
 
@@ -58,34 +65,25 @@ class Simulation {
    * @param {time} time Time units to advance the simulation by
    */
   advance(time) {
-    this.timestamp += time;
+    this.timestamp += this.step * time;
 
     this.updatePopulationNumbers();
 
-    const deltaNeanderthals = this.neanderthalAmt - this.neanderthals.length;
+    const deltaNeanderthals = this.neanderthalAmt - this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
     for (let i = 0; i < Math.abs(deltaNeanderthals); ++i) {
       if (deltaNeanderthals > 0) {
-        const n = new Person.Person(Entity.TYPES['TYPE_NEANDERTHAL']);
-        this.neanderthalBase.addEntity(n);
+        this.neanderthalBase.showOne(Entity.TYPES['TYPE_NEANDERTHAL']);
       } else {
-        const target =
-            Math.round(Math.random() * (this.neanderthals.length - 1));
-        this.neanderthals[target].model
-            .parent.remove(this.neanderthals[target].model);
-        this.neanderthals.splice(target, 1);
+        this.neanderthalBase.hideOne(Entity.TYPES['TYPE_NEANDERTHAL']);
       }
     }
 
-    const deltaHumans = this.humanAmt - this.humans.length;
+    const deltaHumans = this.humanAmt - this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
     for (let i = 0; i < Math.abs(deltaHumans); ++i) {
       if (deltaHumans > 0) {
-        const n = new Person.Person(Entity.TYPES['TYPE_HUMAN']);
-        this.humanBase.addEntity(n);
+        this.humanBase.showOne(Entity.TYPES['TYPE_HUMAN']);
       } else {
-        const target = Math.round(Math.random() * (this.humans.length - 1));
-        this.humans[target].model
-            .parent.remove(this.humans[target].model);
-        this.humans.splice(target, 1);
+        this.humanBase.hideOne(Entity.TYPES['TYPE_HUMAN']);
       }
     }
   }
@@ -135,6 +133,10 @@ class Simulation {
    * @param {number} seconds Seconds to add to the delta
    */
   addDelta(seconds) {
+    if (this.status === this.STATUS['PAUSED']) {
+      return;
+    }
+
     this.delta += seconds;
     if (this.delta >= this.secondsPerUnit) {
       this.delta = 0;
@@ -149,6 +151,21 @@ class Simulation {
     this.timestamp = 0;
     this.delta = 0;
     this.advance(0);
+    this.status = this.STATUS['PAUSED'];
+  }
+
+  /**
+   * Run the simulation
+   */
+  run() {
+    this.status = this.STATUS['RUNNING'];
+  }
+
+  /**
+   * Pause the simulation
+   */
+  pause() {
+    this.status = this.STATUS['PAUSED'];
   }
 }
 

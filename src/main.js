@@ -71,6 +71,8 @@ const init = () => {
       environment.neanderthalBase,
       environment.humanBase,
       0.1,
+      1,
+      paramMenu,
   );
 
   textBox = document.createElement('div');

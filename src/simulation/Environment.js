@@ -20,11 +20,14 @@ let humanBase;
 
 class Environment extends THREE.Group {
 
-    constructor(){
+    constructor(initNeanderthals, initHumans, planeDimension = 150){
       super();
+      this.initNeanderthals = initNeanderthals;
+      this.initHumans = initHumans;
+      this.planeDimension = planeDimension;
 
       // ground
-      let geometry = new THREE.PlaneBufferGeometry(1000, 1000);
+      let geometry = new THREE.PlaneBufferGeometry(this.planeDimension, this.planeDimension);
       geometry.rotateX(-Math.PI / 2);
       let texture = new THREE.TextureLoader().load(
           '/assets/textures/grass.jpg',
@@ -32,59 +35,56 @@ class Environment extends THREE.Group {
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
       texture.repeat.set(4,4);
-      let material = new THREE.MeshPhongMaterial({map: texture});
+      // let material = new THREE.MeshPhongMaterial({map: texture});
+      let material = new THREE.MeshPhongMaterial({color: 0xa1a1a1});
       let mesh = new THREE.Mesh(geometry, material);
       this.add(mesh);
 
       // fence
+      const FENCE_HEIGHT = 1;
       for (let i = 0; i < 4; ++i) {
-        geometry = new THREE.PlaneBufferGeometry(1000, 1);
-        geometry.translate(0, 0.5, -500);
+        geometry = new THREE.PlaneBufferGeometry(this.planeDimension, FENCE_HEIGHT);
+        geometry.translate(0, FENCE_HEIGHT / 2, -this.planeDimension / 2);
         geometry.rotateY(i * Math.PI / 2);
-        geometry.scale(1, 50, 1);
         texture = new THREE.TextureLoader().load(
             '/assets/textures/fence.jpg',
         );
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(10, 1);
-        material =
-            new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
+        // material =
+            // new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
+        material = new THREE.MeshPhongMaterial({color: 0x606060});
         mesh = new THREE.Mesh(geometry, material);
         this.add(mesh);
       }
 
-
       // neanderthal base
       neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
 
-      neanderthalBase.radius = 250;
+      neanderthalBase.radius = this.planeDimension / 4;
       neanderthalBase.model.position.set(
-          50 + Math.random() * 150,
+          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
           1,
-          50 + Math.random() * 150,
+          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
       );
 
-      for (let i = 0; i < 100; ++i) {
-        const n = new Person.Person(Entity.TYPES['TYPE_NEANDERTHAL']);
-        neanderthalBase.addEntity(n);
-      }
+      neanderthalBase.preload(3 * this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
+      neanderthalBase.show(this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
       this.add(neanderthalBase.model);
 
       // human base
       humanBase = new Base.Base('humans', 0x00ff00);
 
-      humanBase.radius = 250;
+      humanBase.radius = this.planeDimension / 4;
       humanBase.model.position.set(
-          -(50 + Math.random() * 150),
+          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
           1,
-          -(50 + Math.random() * 150),
+          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
       );
 
-      for (let i = 0; i < 100; ++i) {
-        const h = new Person.Person(Entity.TYPES['TYPE_HUMAN']);
-        humanBase.addEntity(h);
-      }
+      humanBase.preload(3 * this.initHumans, Entity.TYPES['TYPE_HUMAN']);
+      humanBase.show(this.initHumans, Entity.TYPES['TYPE_HUMAN']);
       this.add(humanBase.model);
 
       this.neanderthalBase = neanderthalBase;
@@ -92,11 +92,11 @@ class Environment extends THREE.Group {
     }
 
     getNeanderthalPopulation(){
-      return this.neanderthalBase.entities.length;
+      return this.neanderthalBase.entities[Entity.TYPES['TYPE_NEANDERTHAL']].length;
     }
 
     getHumanPopulation(){
-      return this.humanBase.entities.length;
+      return this.humanBase.entities[Entity.TYPES['TYPE_HUMAN']].length;
     }
 }
 
