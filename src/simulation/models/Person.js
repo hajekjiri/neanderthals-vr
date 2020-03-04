@@ -27,10 +27,20 @@ class Person extends MovingEntity.MovingEntity {
    */
   addDefaultModel() {
     if (this.type === Entity.TYPES['TYPE_NEANDERTHAL']) {
-      const neanModel = new MODEL.PersonModel(0x326FC7);
+      const neanModel = new THREE.Mesh(
+           new THREE.CircleBufferGeometry(0.5, 3),
+          new THREE.MeshPhongMaterial({color: 0x326FC7}),
+      );
+      neanModel.translateY(0.01);
+      neanModel.rotateX(-Math.PI / 2);
       this.model.add(neanModel);
     } else {
-      const humanModel = new MODEL.PersonModel(0x8C3320);
+      const humanModel = new THREE.Mesh(
+          new THREE.CircleBufferGeometry(0.5, 3),
+          new THREE.MeshPhongMaterial({color: 0x8c3320}),
+      );
+      humanModel.translateY(0.01);
+      humanModel.rotateX(-Math.PI / 2);
       this.model.add(humanModel);
     }
   }
