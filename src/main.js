@@ -6,6 +6,7 @@ const GuiParam = require('./simulation/GuiParameterMenu');
 const GuiVR = require('./simulation/GuiVR');
 const Simulation = require('./simulation/Simulation');
 const Button = require('./simulation/Button.js');
+const PopTextBox = require('./simulation/PopTextBox.js');
 
 let camera;
 
@@ -16,10 +17,12 @@ let paramMenu;
 let scene;
 let renderer;
 let textBox;
+let textBoxCtx;
 let userRig;
 let environment;
 let simulation;
 let clock;
+let deltaText;
 
 
 /**
@@ -57,7 +60,7 @@ const init = () => {
 
   paramMenu = new GuiParam.GuiParamMenu();
   paramMenu.rotateY(-Math.PI / 3);
-  paramMenu.translateZ(-1);
+  paramMenu.translateZ(-1.75);
   paramMenu.translateY(1.6);
   userRig.add(paramMenu);
 
@@ -73,7 +76,22 @@ const init = () => {
       0.1,
       1,
       paramMenu,
+      () => {
+        // do nothing
+      },
+      () => {
+        // do nothing
+      },
+      () => {
+        // do nothing
+      },
   );
+
+  textBox = new PopTextBox.PopTextBox(0, 100, 100);
+  userRig.add(textBox);
+  textBox.rotateY(Math.PI / 3);
+  textBox.translateY(1.8);
+  textBox.translateZ(-1.5);
 
   let button = new Button.PlayPauseButton(
       0.5,
@@ -90,28 +108,10 @@ const init = () => {
     button.pause()
   };
 
-
   button.rotateY(Math.PI / 3);
   button.translateY(1.2);
-  button.translateZ(-1);
+  button.translateZ(-1.5);
   userRig.add(button);
-
-  textBox = document.createElement('div');
-  textBox.style.position = 'absolute';
-  textBox.style.zIndex = 1;
-  textBox.style.width = 100;
-  textBox.style.height = 100;
-  textBox.style.backgroundColor = 'white';
-  textBox.style.color = 'black';
-  textBox.style.padding = '5px';
-  textBox.innerHTML =
-      `<span style="color: blue;">Neanderthal</span> population:
-         ${environment.getNeanderthalPopulation()}<br>
-       <span style="color: #ffaa00">Human</span> population:
-         ${environment.getHumanPopulation()}`;
-  textBox.style.top = '20px';
-  textBox.style.left = '20px';
-  document.body.appendChild(textBox);
 
   // lights
   const light = new THREE.AmbientLight( 0xaaaaaa );
@@ -124,6 +124,8 @@ const init = () => {
   renderer.setAnimationLoop(render);
 
   clock = new THREE.Clock();
+
+  deltaText = 5;
 };
 
 /**
@@ -147,31 +149,13 @@ const animate = () => {
  * Render function
  */
 const render = () => {
-  simulation.addDelta(clock.getDelta());
+  let delta = clock.getDelta();
+  simulation.addDelta(delta);
 
-  textBox.innerHTML =
-      `Time passed: ${simulation.timestamp} years<br>
-      <span style="color: blue;">Neanderthal</span> population:
-        ${simulation.neanderthalAmt}<br>
-      <span style="color: #ffaa00">Human</span> population:
-        ${simulation.humanAmt}`;
-
-  if (simulation.neanderthalAmt == 0 ||
-      simulation.humanAmt == 0) {
-    if (simulation.neanderthalAmt == 0 &&
-        simulation.humanAmt == 0 ) {
-      textBox.innerHTML += '<br>Both species went extinct.';
-    } else if (simulation.neanderthalAmt == 0) {
-      textBox.innerHTML +=
-          '<br><span style="color: blue;">' +
-          'Neanderthals' +
-          '</span> went extinct.';
-    } else {
-      textBox.innerHTML +=
-          '<br><span style="color: #ffaa00">' +
-          'Humans' +
-          '</span> went extinct.';
-    }
+  deltaText += delta;
+  if (deltaText >= 0.1) {
+    deltaText = 0;
+    textBox.updateNumbers(simulation.timestamp, simulation.neanderthalAmt, simulation.humanAmt);
   }
 
   renderer.render( scene, camera );

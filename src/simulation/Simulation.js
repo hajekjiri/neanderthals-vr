@@ -14,7 +14,7 @@ class Simulation {
    * @param {Base} humanBase Human base
    * @param {number} secondsPerUnit Seconds per 1 time unit
    */
-  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit, step, paramMenu) {
+  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit, step, paramMenu, startFunc, pauseFunc, stopFunc) {
     this.initialPrey = initialPrey;
     this.preyAmt = this.initialPrey;
 
@@ -44,6 +44,9 @@ class Simulation {
     this.delta = 0;
 
     this.paramMenu = paramMenu;
+    this.startFunc = startFunc;
+    this.pauseFunc = pauseFunc;
+    this.stopFunc = stopFunc;
 
     this.STATUS = {
       'PAUSED': 0,
@@ -174,6 +177,7 @@ class Simulation {
     this.paramMenu.gui.tmpCollider = this.paramMenu.gui.collider;
     this.paramMenu.gui.collider = new THREE.Group();
     this.status = this.STATUS['RUNNING'];
+    this.startFunc();
   }
 
   /**
@@ -181,12 +185,14 @@ class Simulation {
    */
   pause() {
     this.status = this.STATUS['PAUSED'];
+    this.pauseFunc();
   }
 
   stop() {
     this.paramMenu.visible = true;
     this.paramMenu.gui.collider = this.paramMenu.gui.tmpCollider;
     this.status = this.STATUS['STOPPED'];
+    this.stopFunc();
   }
 }
 
