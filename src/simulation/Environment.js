@@ -49,8 +49,6 @@ class Environment extends THREE.Group {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
         texture.repeat.set(10, 1);
-        // material =
-            // new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
         material = new THREE.MeshPhongMaterial({color: 0x606060});
         mesh = new THREE.Mesh(geometry, material);
         this.add(mesh);
@@ -79,7 +77,7 @@ class Environment extends THREE.Group {
       );
 
       neanderthalBase.preload(3 * this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
-      neanderthalBase.show(this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
+      // neanderthalBase.show(this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
       this.add(neanderthalBase.model);
 
       // human base
@@ -93,7 +91,7 @@ class Environment extends THREE.Group {
       );
 
       humanBase.preload(3 * this.initHumans, Entity.TYPES['TYPE_HUMAN']);
-      humanBase.show(this.initHumans, Entity.TYPES['TYPE_HUMAN']);
+      // humanBase.show(this.initHumans, Entity.TYPES['TYPE_HUMAN']);
       this.add(humanBase.model);
 
       this.neanderthalBase = neanderthalBase;

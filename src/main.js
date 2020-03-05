@@ -5,6 +5,7 @@ const Environment = require('./simulation/Environment');
 const GuiParam = require('./simulation/GuiParameterMenu');
 const GuiVR = require('./simulation/GuiVR');
 const Simulation = require('./simulation/Simulation');
+const Button = require('./simulation/Button.js');
 
 let camera;
 
@@ -47,18 +48,17 @@ const init = () => {
 
   camera.position.set(0, 1.6, 1);
 
-  // add parameter control menu
-  paramMenu = new GuiParam.GuiParamMenu();
-  paramMenu.rotateY(-Math.PI / 3);
-  paramMenu.translateZ(-1);
-  paramMenu.translateY(1.6);
-
   userRig = new UserRig.UserRig(camera, renderer.xr);
   scene.add(userRig);
 
   // adjust user's position
   userRig.translateZ(200);
+  // add parameter control menu
 
+  paramMenu = new GuiParam.GuiParamMenu();
+  paramMenu.rotateY(-Math.PI / 3);
+  paramMenu.translateZ(-1);
+  paramMenu.translateY(1.6);
   userRig.add(paramMenu);
 
   // initialize the environment
@@ -74,6 +74,27 @@ const init = () => {
       1,
       paramMenu,
   );
+
+  let button = new Button.PlayPauseButton(
+      0.5,
+      0.1,
+      () => {
+        simulation.run();
+      },
+      () => {
+        simulation.pause();
+      },
+  );
+
+  simulation.pauseButton = () => {
+    button.pause()
+  };
+
+
+  button.rotateY(Math.PI / 3);
+  button.translateY(1.2);
+  button.translateZ(-1);
+  userRig.add(button);
 
   textBox = document.createElement('div');
   textBox.style.position = 'absolute';

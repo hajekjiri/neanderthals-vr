@@ -1,6 +1,7 @@
 const ODESolver = require('../util/ODESolver');
 const Person = require('./models/Person');
 const Entity = require('./models/Entity');
+const THREE = require('three');
 
 /**
  * Simulation wrapper
@@ -19,12 +20,14 @@ class Simulation {
 
     this.neanderthalBase = neanderthalBase;
     this.neanderthals = this.neanderthalBase;
-    this.initialNeanderthals = this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
+    // this.initialNeanderthals = this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
+    this.initialNeanderthals = 100;
     this.neanderthalAmt = this.initialNeanderthals;
 
     this.humanBase = humanBase;
     this.humans = this.humanBase;
-    this.initialHumans = this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
+    // this.initialHumans = this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
+    this.initialHumans = 100;
     this.humanAmt = this.initialHumans;
 
     this.solver = new ODESolver.ODESolver(
@@ -32,6 +35,9 @@ class Simulation {
 
     this.secondsPerUnit = secondsPerUnit;
     this.step = step;
+    this.pauseButton = () => {
+      throw Error('pauseButton function is undefined in Simulation');
+    };
 
     // amt of time units from the start of the simulation
     this.timestamp = 0;
@@ -42,9 +48,11 @@ class Simulation {
     this.STATUS = {
       'PAUSED': 0,
       'RUNNING': 1,
+      'STOPPED': 2,
     };
 
-    this.status = this.STATUS['RUNNING'];
+    this.status = this.STATUS['PAUSED'];
+    this.reset();
   }
 
   /**
@@ -99,7 +107,8 @@ class Simulation {
     this.updateODESolver();
     // calculate new population numbers using the diff eqn solver
     if (this.neanderthalAmt === 0 || this.humanAmt === 0) {
-      this.status = this.STATUS['PAUSED'];
+      this.stop();
+      this.pauseButton();
       return false;
     }
 
@@ -126,7 +135,8 @@ class Simulation {
    * @param {number} seconds Seconds to add to the delta
    */
   addDelta(seconds) {
-    if (this.status === this.STATUS['PAUSED']) {
+    if (this.status === this.STATUS['PAUSED'] ||
+        this.status === this.STATUS['STOPPED']) {
       return;
     }
 
@@ -144,13 +154,25 @@ class Simulation {
     this.timestamp = 0;
     this.delta = 0;
     this.advance(0);
-    this.status = this.STATUS['PAUSED'];
+    this.neanderthalBase.hide(this.neanderthalBase.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']], Entity.TYPES['TYPE_NEANDERTHAL']);
+    this.humanBase.hide(this.humanBase.visibleAmt[Entity.TYPES['TYPE_HUMAN']], Entity.TYPES['TYPE_HUMAN']);
+    console.log(`show ${this.initialNeanderthals} neanderthals and ${this.initialHumans} humans`);
+    // this.neanderthalBase.show(this.initialNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
+    // this.humanBase.show(this.initialHumans, Entity.TYPES['TYPE_HUMAN']);
+    this.neanderthalAmt = this.initialNeanderthals;
+    this.humanAmt = this.initialHumans;
   }
 
   /**
    * Run the simulation
    */
   run() {
+    if (this.status === this.STATUS['STOPPED']) {
+      this.reset();
+    }
+    this.paramMenu.visible = false;
+    this.paramMenu.gui.tmpCollider = this.paramMenu.gui.collider;
+    this.paramMenu.gui.collider = new THREE.Group();
     this.status = this.STATUS['RUNNING'];
   }
 
@@ -159,6 +181,12 @@ class Simulation {
    */
   pause() {
     this.status = this.STATUS['PAUSED'];
+  }
+
+  stop() {
+    this.paramMenu.visible = true;
+    this.paramMenu.gui.collider = this.paramMenu.gui.tmpCollider;
+    this.status = this.STATUS['STOPPED'];
   }
 }
 

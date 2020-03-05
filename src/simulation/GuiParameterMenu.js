@@ -68,8 +68,8 @@ class GuiParamMenu extends THREE.Group{
       }),
     ];
 
-    var parameterMenu = new GuiVR.GuiVRMenu(buttons);
-    this.add(parameterMenu);
+    this.gui = new GuiVR.GuiVRMenu(buttons);
+    this.add(this.gui);
   }
 
   // update the parameter of the differential equation
