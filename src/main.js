@@ -64,6 +64,8 @@ const init = () => {
   paramMenu.translateY(1.6);
   userRig.add(paramMenu);
 
+  let button;
+
   // initialize the environment
   environment = new Environment.Environment(100, 100);
   environment.rotateX(Math.PI / 2);
@@ -77,13 +79,16 @@ const init = () => {
       1,
       paramMenu,
       () => {
-        // do nothing
+        // on start
+        button.play();
       },
       () => {
-        // do nothing
+        // on pause
+        button.pause();
       },
       () => {
-        // do nothing
+        // on stop
+        button.pause();
       },
   );
 
@@ -93,7 +98,7 @@ const init = () => {
   textBox.translateY(1.8);
   textBox.translateZ(-1.5);
 
-  let button = new Button.PlayPauseButton(
+  button = new Button.PlayPauseButton(
       0.5,
       0.1,
       () => {
@@ -103,10 +108,6 @@ const init = () => {
         simulation.pause();
       },
   );
-
-  simulation.pauseButton = () => {
-    button.pause()
-  };
 
   button.rotateY(Math.PI / 3);
   button.translateY(1.2);

@@ -35,9 +35,6 @@ class Simulation {
 
     this.secondsPerUnit = secondsPerUnit;
     this.step = step;
-    this.pauseButton = () => {
-      throw Error('pauseButton function is undefined in Simulation');
-    };
 
     // amt of time units from the start of the simulation
     this.timestamp = 0;
@@ -111,7 +108,6 @@ class Simulation {
     // calculate new population numbers using the diff eqn solver
     if (this.neanderthalAmt === 0 || this.humanAmt === 0) {
       this.stop();
-      this.pauseButton();
       return false;
     }
 
