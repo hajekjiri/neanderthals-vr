@@ -33,6 +33,7 @@ class Environment extends THREE.Group {
       let texture = new THREE.TextureLoader().load(
           '/assets/textures/eurasia.png',
       );
+      texture.repeat.set(1, 1);
       let material = new THREE.MeshPhongMaterial({map: texture});
       let mesh = new THREE.Mesh(geometry, material);
       this.add(mesh);
@@ -43,12 +44,6 @@ class Environment extends THREE.Group {
         geometry = new THREE.PlaneBufferGeometry(this.planeX, FENCE_HEIGHT);
         geometry.translate(0, FENCE_HEIGHT / 2, -this.planeY / 2);
         geometry.rotateY(Math.PI * i);
-        texture = new THREE.TextureLoader().load(
-            '/assets/textures/fence.jpg',
-        );
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(10, 1);
         material = new THREE.MeshPhongMaterial({color: 0x606060});
         mesh = new THREE.Mesh(geometry, material);
         this.add(mesh);
@@ -58,9 +53,6 @@ class Environment extends THREE.Group {
         geometry = new THREE.PlaneBufferGeometry(this.planeY, FENCE_HEIGHT);
         geometry.translate(0, FENCE_HEIGHT / 2, -this.planeX / 2);
         geometry.rotateY(Math.PI / 2 + Math.PI * i);
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(10, 1);
         material = new THREE.MeshPhongMaterial({color: 0x606060});
         mesh = new THREE.Mesh(geometry, material);
         this.add(mesh);
