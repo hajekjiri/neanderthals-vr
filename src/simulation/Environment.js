@@ -20,32 +20,29 @@ let humanBase;
 
 class Environment extends THREE.Group {
 
-    constructor(initNeanderthals, initHumans, planeDimension = 150){
+    constructor(initNeanderthals, initHumans, planeX = 400, planeY = 200){
       super();
       this.initNeanderthals = initNeanderthals;
       this.initHumans = initHumans;
-      this.planeDimension = planeDimension;
+      this.planeX = planeX;
+      this.planeY = planeY;
 
       // ground
-      let geometry = new THREE.PlaneBufferGeometry(this.planeDimension, this.planeDimension);
+      let geometry = new THREE.PlaneBufferGeometry(this.planeX, this.planeY);
       geometry.rotateX(-Math.PI / 2);
       let texture = new THREE.TextureLoader().load(
-          '/assets/textures/grass.jpg',
+          '/assets/textures/eurasia.png',
       );
-      texture.wrapS = THREE.RepeatWrapping;
-      texture.wrapT = THREE.RepeatWrapping;
-      texture.repeat.set(4,4);
-      // let material = new THREE.MeshPhongMaterial({map: texture});
-      let material = new THREE.MeshPhongMaterial({color: 0xa1a1a1});
+      let material = new THREE.MeshPhongMaterial({map: texture});
       let mesh = new THREE.Mesh(geometry, material);
       this.add(mesh);
 
       // fence
       const FENCE_HEIGHT = 1;
-      for (let i = 0; i < 4; ++i) {
-        geometry = new THREE.PlaneBufferGeometry(this.planeDimension, FENCE_HEIGHT);
-        geometry.translate(0, FENCE_HEIGHT / 2, -this.planeDimension / 2);
-        geometry.rotateY(i * Math.PI / 2);
+      for (let i = 0; i < 2; ++i) {
+        geometry = new THREE.PlaneBufferGeometry(this.planeX, FENCE_HEIGHT);
+        geometry.translate(0, FENCE_HEIGHT / 2, -this.planeY / 2);
+        geometry.rotateY(Math.PI * i);
         texture = new THREE.TextureLoader().load(
             '/assets/textures/fence.jpg',
         );
@@ -59,14 +56,26 @@ class Environment extends THREE.Group {
         this.add(mesh);
       }
 
+      for (let i = 0; i < 2; ++i) {
+        geometry = new THREE.PlaneBufferGeometry(this.planeY, FENCE_HEIGHT);
+        geometry.translate(0, FENCE_HEIGHT / 2, -this.planeX / 2);
+        geometry.rotateY(Math.PI / 2 + Math.PI * i);
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        texture.repeat.set(10, 1);
+        material = new THREE.MeshPhongMaterial({color: 0x606060});
+        mesh = new THREE.Mesh(geometry, material);
+        this.add(mesh);
+      }
+
       // neanderthal base
       neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
 
-      neanderthalBase.radius = this.planeDimension / 4;
+      neanderthalBase.radius = this.planeY / 4;
       neanderthalBase.model.position.set(
-          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
+          -40,
           1,
-          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
+          0,
       );
 
       neanderthalBase.preload(3 * this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
@@ -76,11 +85,11 @@ class Environment extends THREE.Group {
       // human base
       humanBase = new Base.Base('humans', 0x00ff00);
 
-      humanBase.radius = this.planeDimension / 4;
+      humanBase.radius = this.planeY / 4;
       humanBase.model.position.set(
-          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
+          -160,
           1,
-          this.planeDimension / 20 + Math.random() * 0.15 * this.planeDimension,
+          80,
       );
 
       humanBase.preload(3 * this.initHumans, Entity.TYPES['TYPE_HUMAN']);
