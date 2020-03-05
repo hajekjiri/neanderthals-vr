@@ -27,7 +27,7 @@ class Person extends MovingEntity.MovingEntity {
   addDefaultModel() {
     if (this.type === Entity.TYPES['TYPE_NEANDERTHAL']) {
       const neanModel = new THREE.Mesh(
-           new THREE.CircleBufferGeometry(0.5, 3),
+           new THREE.CircleBufferGeometry(0.75, 3),
           new THREE.MeshPhongMaterial({color: 0x326FC7}),
       );
       neanModel.translateY(0.01);
@@ -35,7 +35,7 @@ class Person extends MovingEntity.MovingEntity {
       this.model.add(neanModel);
     } else {
       const humanModel = new THREE.Mesh(
-          new THREE.CircleBufferGeometry(0.5, 3),
+          new THREE.CircleBufferGeometry(0.75, 3),
           new THREE.MeshPhongMaterial({color: 0x8c3320}),
       );
       humanModel.translateY(0.01);

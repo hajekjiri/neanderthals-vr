@@ -59,28 +59,22 @@ class Environment extends THREE.Group {
       }
 
       // neanderthal base
-      neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
+      neanderthalBase = new Base.Base('Neanderthals', 0x0000ff);
 
-      neanderthalBase.radius = this.planeY / 4;
-      neanderthalBase.model.position.set(
-          -40,
-          1,
-          0,
-      );
+      // neanderthalBase.radius = this.planeY / 4;
+      neanderthalBase.radius = 25;
+      neanderthalBase.model.position.set(-20, 1, 0);
 
       neanderthalBase.preload(3 * this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
       // neanderthalBase.show(this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
       this.add(neanderthalBase.model);
 
       // human base
-      humanBase = new Base.Base('humans', 0x00ff00);
+      humanBase = new Base.Base('humans', 0xff0000);
 
-      humanBase.radius = this.planeY / 4;
-      humanBase.model.position.set(
-          -160,
-          1,
-          80,
-      );
+      // humanBase.radius = this.planeY / 4;
+      humanBase.radius = 15;
+      humanBase.model.position.set(-145, 1, 80);
 
       humanBase.preload(3 * this.initHumans, Entity.TYPES['TYPE_HUMAN']);
       // humanBase.show(this.initHumans, Entity.TYPES['TYPE_HUMAN']);

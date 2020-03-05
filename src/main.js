@@ -73,7 +73,7 @@ const init = () => {
       1000,
       environment.neanderthalBase,
       environment.humanBase,
-      0.1,
+      0.01,
       1,
       paramMenu,
       () => {
