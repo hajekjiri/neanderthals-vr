@@ -60,7 +60,7 @@ class Simulation {
 
   /**
   * Update ode solver to match the parameters on the menu
-  */ updateODESolver(){
+  */ updateODESolver() {
     this.solver = this.paramMenu.updateParameter([this.initialPrey, this.initialNeanderthals, this.initialHumans]);
   }
 

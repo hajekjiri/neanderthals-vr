@@ -5,7 +5,7 @@
 // ODESolver: gives the population in times t (year) according to the differential
 // equation provided by [1]
 //
-//[1] Goldfield, Anna E., et al. “Modeling the Role of Fire and Cooking in the
+// [1] Goldfield, Anna E., et al. “Modeling the Role of Fire and Cooking in the
 // Competitive Exclusion of Neanderthals.” Journal of Human Evolution, vol. 124,
 // Nov. 2018, pp. 91–104. ScienceDirect, doi:10.1016/j.jhevol.2018.07.006.
 
@@ -45,10 +45,8 @@ r: prey's growth rate
 k: prey's carrying capacity (nutrition value)
 */
 
-class ODESolver{
-
-
-  constructor(initialPopulation, alpha=1, beta=1, h1=0.894334, h2=1, d1=0.1, d2=0.1, f1=0, f2=0, r=1, k=1, c1 = 0, c2 = 0){
+class ODESolver {
+  constructor(initialPopulation, alpha=1, beta=1, h1=0.894334, h2=1, d1=0.1, d2=0.1, f1=0, f2=0, r=1, k=1, c1 = 0, c2 = 0) {
     this.population = initialPopulation;
     this.alpha = alpha;
     this.beta = beta;
@@ -65,35 +63,34 @@ class ODESolver{
 
     this.solver = new ODEX.Solver(3);
 
-    this.ode = function(alpha, beta, h1, h2, d1, d2, f1, f2, r, k, c1, c2){
-      return function(x,y){
-        return[
+    this.ode = function(alpha, beta, h1, h2, d1, d2, f1, f2, r, k, c1, c2) {
+      return function(x, y) {
+        return [
           // x is t
           // y[0] is X prey source
           // y[1] is Y AMH population
           // y[2] is Z neanderthal population
           r*y[0]*(1-y[0]/k)-(alpha*y[0]*y[1])/(1+(h1-f1))-beta*y[0]*y[2]/(1+(h2-f2)*beta*y[0]),
           -d1*y[1]+alpha*y[0]*y[1]/(1+(h1-f1)*alpha*y[0])-c1*y[1]*y[2],
-          -d2*y[2]+beta*y[0]*y[2]/(1+(h2-f2)*beta*y[0])-c2*y[1]*y[2]
+          -d2*y[2]+beta*y[0]*y[2]/(1+(h2-f2)*beta*y[0])-c2*y[1]*y[2],
         ];
       };
     };
   }
 
-  solveODE(endTime){
-    var initialX = this.population[0];
-    var initialY = this.population[1];
-    var initialZ = this.population[2];
-    var initialPopulationDensity = [1,1,1];
-    var populationDensity = this.solver.solve(this.ode(this.alpha, this.beta,
-      this.h1, this.h2, this.d1, this.d2, this.f1, this.f2, this.r, this.k, this.c1,
-      this.c2),0,initialPopulationDensity, endTime).y;
+  solveODE(endTime) {
+    const initialX = this.population[0];
+    const initialY = this.population[1];
+    const initialZ = this.population[2];
+    const initialPopulationDensity = [1, 1, 1];
+    const populationDensity = this.solver.solve(this.ode(this.alpha, this.beta,
+        this.h1, this.h2, this.d1, this.d2, this.f1, this.f2, this.r, this.k, this.c1,
+        this.c2), 0, initialPopulationDensity, endTime).y;
     return [
       Math.round(populationDensity[0]*initialX),
       Math.round(populationDensity[1]*initialY),
-      Math.round(populationDensity[2]*initialZ)]
+      Math.round(populationDensity[2]*initialZ)];
   }
-
 }
 
 /*

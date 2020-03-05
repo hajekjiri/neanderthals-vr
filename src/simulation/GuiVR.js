@@ -7,21 +7,20 @@ const THREE = require('three');
 
 const guiElements = [];
 
-function intersectObjects(raycaster){
-
+function intersectObjects(raycaster) {
   //
-  var colliders = [];
-  for (var i = 0; i < guiElements.length; i++){
+  const colliders = [];
+  for (var i = 0; i < guiElements.length; i++) {
     colliders.push(guiElements[i].collider);
   }
 
-  var intersections = raycaster.intersectObjects(colliders);
+  const intersections = raycaster.intersectObjects(colliders);
 
-  if(intersections.length > 0){
-    var intersection = intersections[0];
-    var object = intersection.object;
-    for (var i = 0; i < guiElements.length; i++){
-      if (guiElements[i].collider == object){
+  if (intersections.length > 0) {
+    const intersection = intersections[0];
+    const object = intersection.object;
+    for (var i = 0; i < guiElements.length; i++) {
+      if (guiElements[i].collider == object) {
         guiElements[i].collide(intersection.uv, intersection.point);
         return guiElements[i];
       }
@@ -29,11 +28,11 @@ function intersectObjects(raycaster){
   }
 }
 
-class GuiVR extends THREE.Group{
-  constructor(){
+class GuiVR extends THREE.Group {
+  constructor() {
     super();
-    if(new.target==GuiVR){
-      throw new TypeError("GuiVR is abstrat class and cannot be instantiated.");
+    if (new.target==GuiVR) {
+      throw new TypeError('GuiVR is abstrat class and cannot be instantiated.');
     }
     this.collider = undefined;
     guiElements.push(this);
@@ -45,15 +44,14 @@ const epsilon = 0.03;
 // Class for VR representation of sliding menu button, not intended to
 // used outside of a GuiVRMenu.
 class GuiVRButton extends THREE.Group {
-
-    // Creates a new menu button with the provided string label Has an
-    // initial value initVal and ranges between minVal and maxVal.
-    // isInt should be set to true of the value is integer.
-    // updateCallback is called to report a value entered.
-    // updateCallback is called once by this constructor and then each
-    // time the value changes.
-    constructor(label, initVal, minVal, maxVal, isInt, updateCallback){
-      super();
+  // Creates a new menu button with the provided string label Has an
+  // initial value initVal and ranges between minVal and maxVal.
+  // isInt should be set to true of the value is integer.
+  // updateCallback is called to report a value entered.
+  // updateCallback is called once by this constructor and then each
+  // time the value changes.
+  constructor(label, initVal, minVal, maxVal, isInt, updateCallback) {
+    super();
 
     	this.label = label;
     	this.val = initVal;
@@ -65,10 +63,10 @@ class GuiVRButton extends THREE.Group {
     	this.updateCallback(this.val);
 
     	this.w = 1;
-        this.h = 0.1;
+    this.h = 0.1;
     	// Create canvas that will display the button.
     	this.ctx = document.createElement('canvas').getContext('2d');
-        this.ctx.canvas.width = 650;
+    this.ctx.canvas.width = 650;
     	this.ctx.canvas.height = Math.floor(this.ctx.canvas.width * this.h / this.w);
     	// Create texture from canvas.
     	this.texture = new THREE.CanvasTexture(this.ctx.canvas);
@@ -80,64 +78,66 @@ class GuiVRButton extends THREE.Group {
     	// Create rectangular mesh textured with the button that is displayed.
     	this.mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(this.w, this.h), this.meshMaterial);
     	this.add(this.mesh);
-    }
+  }
 
-    // Update the display of the button according to the current value.
-    updateTexture(){
-      var ctx = this.ctx;
+  // Update the display of the button according to the current value.
+  updateTexture() {
+    const ctx = this.ctx;
     	// Clear canvas.
     	ctx.fillStyle = '#000000';
     	ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     	ctx.fillStyle = '#555753';
     	ctx.fillRect(3, 3, ctx.canvas.width-6, ctx.canvas.height-6);
     	// Display label.
-    	ctx.font = "30px Arial";
+    	ctx.font = '30px Arial';
     	ctx.fillStyle = '#729FCF';
-    	ctx.textAlign = "left";
+    	ctx.textAlign = 'left';
     	ctx.strokeText(this.label, 15, ctx.canvas.height/1.5);
     	ctx.fillText(this.label, 15, ctx.canvas.height/1.5);
     	// Display slider at current value.
-    	var intervalWidth = 1 / (this.maxVal - this.minVal);
-    	var width = Math.floor((this.val - this.minVal) * intervalWidth * (Math.floor(ctx.canvas.width/2) - 3));
+    	const intervalWidth = 1 / (this.maxVal - this.minVal);
+    	const width = Math.floor((this.val - this.minVal) * intervalWidth * (Math.floor(ctx.canvas.width/2) - 3));
     	ctx.fillStyle = '#729FCF';
     	ctx.fillRect(Math.floor(ctx.canvas.width/2), 3, width, ctx.canvas.height - 6);
     	ctx.fillStyle = '#000000';
     	ctx.fillRect(Math.floor(ctx.canvas.width/2)-6, 3, 6, ctx.canvas.height - 6);
     	// Display current value.
     	ctx.fillStyle = '#FFFFFF';
-    	ctx.textAlign = "right";
+    	ctx.textAlign = 'right';
     	if (this.isInt) {
     	    ctx.fillText(this.val, ctx.canvas.width - 15, ctx.canvas.height/1.5);
     	} else {
     	    ctx.fillText(this.val.toFixed(2), ctx.canvas.width - 15, ctx.canvas.height/1.5);
     	}
     	this.texture.needsUpdate = true;
-    }
+  }
 
-    // Click handler.  Determines whether slider is hit and if so
-    // computes new value.  The updateCallback is called to report the
-    // value is modified.
-    collide(uv, pt){
-      val = 0;
+  // Click handler.  Determines whether slider is hit and if so
+  // computes new value.  The updateCallback is called to report the
+  // value is modified.
+  collide(uv, pt) {
+    val = 0;
     	if (uv.x < 0.50 - epsilon)
     	    // Doesn't hit slider.
-    	    return;
+    	    {
+      return;
+    }
     	if (uv.x < 0.5) {
     	    // Extra space to select minVal.
     	    val = this.minVal;
-    	} else if (uv.x > 1 - epsilon){
+    	} else if (uv.x > 1 - epsilon) {
     	    // Extra space to select maxVal.
     	    val = this.maxVal;
     	} else {
     	    // Hit slider.
 
     	    // Determine amount selected.
-    	    var alpha = Math.min((uv.x - 0.5)/(0.5 - epsilon/2), 1);
+    	    const alpha = Math.min((uv.x - 0.5)/(0.5 - epsilon/2), 1);
 
     	    // Compute value at selection.
     	    var val = 0;
-    	    if (this.isInt){
-    		var intervalWidth = 1 / (this.maxVal - this.minVal + 1);
+    	    if (this.isInt) {
+    		const intervalWidth = 1 / (this.maxVal - this.minVal + 1);
     		val = Math.floor(alpha / intervalWidth) + this.minVal;
     	    } else {
     		val = alpha * (this.maxVal - this.minVal) + this.minVal;
@@ -145,34 +145,33 @@ class GuiVRButton extends THREE.Group {
     	}
 
     	// Update value and call updateCallback if necessary.
-    	if (val != this.val){
+    	if (val != this.val) {
     	    this.val = val;
     	    this.updateCallback(this.val);
     	    this.updateTexture();
     	}
-    }
+  }
 }
 
 // Class for VR representation of a menu.
 class GuiVRMenu extends GuiVR {
-
-  constructor(buttonList){// Creates a new menu with the specified buttons.
+  constructor(buttonList) {// Creates a new menu with the specified buttons.
     super();
     this.w = 0;
     this.h = 0;
     this.buttonList = [];
     this.matrixRel = undefined;
     // Determine the total dimensions.
-    for (var i = 0; i < buttonList.length; i++){
+    for (var i = 0; i < buttonList.length; i++) {
       var button = buttonList[i];
       this.h += button.h;
 	    this.w = Math.max(this.w, button.w);
     }
 
     // Position buttons and add to this group.
-    var h = 0;
-    for (var i = 0; i < buttonList.length; i++){
-	    var button = buttonList[i]
+    let h = 0;
+    for (var i = 0; i < buttonList.length; i++) {
+	    var button = buttonList[i];
 	    this.add(button);
 	    this.buttonList.push(button);
 	    button.position.y = this.h/2 - h - button.h/2;
@@ -188,38 +187,38 @@ class GuiVRMenu extends GuiVR {
 
   // Click handler.  Determine which button is hit and then calls
   // that button's collide.
-  collide(uv, pt){
-    var v = 1;
+  collide(uv, pt) {
+    let v = 1;
 
     // Loop over the button locations.
-  	for (var i = 0; i < this.buttonList.length; i++){
-  	    var vNext = v - this.buttonList[i].h / this.h; // uv coords have y inverted.
+  	for (let i = 0; i < this.buttonList.length; i++) {
+  	    const vNext = v - this.buttonList[i].h / this.h; // uv coords have y inverted.
 
   	    if (uv.y > vNext) {
-          var uvNew = {x: uv.x, y: (uv.y - vNext)/this.buttonList[i].h}
-          this.buttonList[i].collide(uvNew, pt);
-          return;
+        const uvNew = {x: uv.x, y: (uv.y - vNext)/this.buttonList[i].h};
+        this.buttonList[i].collide(uvNew, pt);
+        return;
   	    }
-        v = vNext;
-      }
+      v = vNext;
     }
+  }
   // Causes the object to follow the specified matrixWorld relative
   // to the menu's relative position when this function is first
   // called.
-  follow(matrixWorld){
+  follow(matrixWorld) {
     // Compute the current world pose to use as the relative pose
     // for this and future calls to follow.
-    if (this.matrixRel == undefined){
+    if (this.matrixRel == undefined) {
       this.updateMatrixWorld();
       this.matrixRel = this.matrixWorld.clone();
     }
     // Determine the pose to move to relative to matrixWorld.
-    var tempMatrix = new THREE.Matrix4().identity();
+    const tempMatrix = new THREE.Matrix4().identity();
     tempMatrix.multiplyMatrices(matrixWorld, this.matrixRel);
 
-    var pos = new THREE.Vector3();
-    var quat = new THREE.Quaternion();
-    var scale = new THREE.Vector3();
+    const pos = new THREE.Vector3();
+    const quat = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
     tempMatrix.decompose(pos, quat, scale);
 
     // Update pose.
@@ -234,4 +233,4 @@ module.exports = {
   GuiVRMenu,
   GuiVRButton,
   GuiVR,
-}
+};

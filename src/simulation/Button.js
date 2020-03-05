@@ -32,7 +32,7 @@ class PlayPauseButton extends Button {
     };
 
     this.status = this.STATUS['PAUSE'];
- 
+
     this.playSign = new THREE.Group();
     this.playSign.add(
         new THREE.Mesh(
@@ -52,7 +52,7 @@ class PlayPauseButton extends Button {
 
     this.pauseSign = new THREE.Group();
     for (let i = 0; i < 2; ++i) {
-      let line = new THREE.Mesh(
+      const line = new THREE.Mesh(
           new THREE.PlaneBufferGeometry(
               this.dimension / 20 +0.03,
               this.dimension / 2,
@@ -97,5 +97,5 @@ class PlayPauseButton extends Button {
 
 module.exports = {
   PlayPauseButton,
-}
+};
 

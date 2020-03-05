@@ -2,17 +2,17 @@ const THREE = require('three');
 
 
 class PopTextBox extends THREE.Group {
-  constructor(initNeanderthals, initHumans) {  
+  constructor(initNeanderthals, initHumans) {
     super();
     let label;
     let geometry;
     let texture;
     let material;
     let mesh;
-    let WIDTH = 0.5;
-    let HEIGHT = 0.1;
-    let CANVAS_WIDTH = 512;
-    let CANVAS_HEIGHT = 64;
+    const WIDTH = 0.5;
+    const HEIGHT = 0.1;
+    const CANVAS_WIDTH = 512;
+    const CANVAS_HEIGHT = 64;
     let offset = 0;
 
     this.textures = [];
@@ -55,7 +55,7 @@ class PopTextBox extends THREE.Group {
     label = 'Time elapsed';
     this.timeCtx.strokeText(label, 15, this.timeCtx.canvas.height / 1.5);
     this.timeCtx.fillText(label, 15, this.timeCtx.canvas.height / 1.5);
-    
+
     this.timeCtx.fillStyle = 'black';
     this.timeCtx.textAlign = 'right';
     label = '0 years';
@@ -86,7 +86,7 @@ class PopTextBox extends THREE.Group {
     label = 'Neanderthals';
     this.neanCtx.strokeText(label, 15, this.neanCtx.canvas.height / 1.5);
     this.neanCtx.fillText(label, 15, this.neanCtx.canvas.height / 1.5);
-    
+
     this.neanCtx.fillStyle = 'black';
     this.neanCtx.textAlign = 'right';
     label = initNeanderthals;
@@ -117,7 +117,7 @@ class PopTextBox extends THREE.Group {
     label = 'Modern humans';
     this.humanCtx.strokeText(label, 15, this.humanCtx.canvas.height / 1.5);
     this.humanCtx.fillText(label, 15, this.humanCtx.canvas.height / 1.5);
-    
+
     this.humanCtx.fillStyle = 'black';
     this.humanCtx.textAlign = 'right';
     label = initHumans;
@@ -147,7 +147,7 @@ class PopTextBox extends THREE.Group {
     label = 'Neanderthals';
     this.neanCtx.strokeText(label, 15, this.neanCtx.canvas.height / 1.5);
     this.neanCtx.fillText(label, 15, this.neanCtx.canvas.height / 1.5);
-    
+
     this.neanCtx.fillStyle = 'black';
     this.neanCtx.textAlign = 'right';
     label = neanderthalsAmt;
@@ -166,7 +166,7 @@ class PopTextBox extends THREE.Group {
     label = 'Time elapsed';
     this.timeCtx.strokeText(label, 15, this.timeCtx.canvas.height / 1.5);
     this.timeCtx.fillText(label, 15, this.timeCtx.canvas.height / 1.5);
-    
+
     this.timeCtx.fillStyle = 'black';
     this.timeCtx.textAlign = 'right';
     label = `${time} years`;
@@ -185,7 +185,7 @@ class PopTextBox extends THREE.Group {
     label = 'Modern humans';
     this.humanCtx.strokeText(label, 15, this.humanCtx.canvas.height / 1.5);
     this.humanCtx.fillText(label, 15, this.humanCtx.canvas.height / 1.5);
-    
+
     this.humanCtx.fillStyle = 'black';
     this.humanCtx.textAlign = 'right';
     label = humansAmt;
@@ -202,5 +202,5 @@ class PopTextBox extends THREE.Group {
 
 module.exports = {
   PopTextBox,
-}
+};
 
