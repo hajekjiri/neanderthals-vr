@@ -9,7 +9,7 @@
     "build-dev": "webpack --config webpack.dev.js && echo OK",
     "build-prod": "webpack --config webpack.prod.js && echo OK",
     "watch": "webpack --watch --config webpack.dev.js",
-    "doc": "rm -rf out && npx jsdoc src -r -d docs"
+    "doc": "rm -rf out && jsdoc src -r -d docs"
   },
   "repository": {
     "type": "git",
