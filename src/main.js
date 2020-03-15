@@ -67,12 +67,16 @@ const init = () => {
   let button;
 
   // initialize the environment
-  environment = new Environment.Environment(100, 100);
+  let INITIAL_NEANDERTHALS = 100;
+  let INITIAL_HUMANS = 100;
+  environment = new Environment.Environment(INITIAL_NEANDERTHALS, INITIAL_HUMANS);
   environment.rotateX(Math.PI / 2);
   //environment.translateY(-100);
   scene.add(environment);
   simulation = new Simulation.Simulation(
       1000,
+      INITIAL_NEANDERTHALS,
+      INITIAL_HUMANS,
       environment.neanderthalBase,
       environment.humanBase,
       0.01,
@@ -92,7 +96,7 @@ const init = () => {
       },
   );
 
-  textBox = new PopTextBox.PopTextBox(0, 100, 100);
+  textBox = new PopTextBox.PopTextBox();
   userRig.add(textBox);
   textBox.rotateY(Math.PI / 3);
   textBox.translateY(1.8);

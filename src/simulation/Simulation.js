@@ -14,20 +14,18 @@ class Simulation {
    * @param {Base} humanBase Human base
    * @param {number} secondsPerUnit Seconds per 1 time unit
    */
-  constructor(initialPrey, neanderthalBase, humanBase, secondsPerUnit, step, paramMenu, startFunc, pauseFunc, stopFunc) {
+  constructor(initialPrey, initialNeanderthals, initialHumans, neanderthalBase, humanBase, secondsPerUnit, step, paramMenu, startFunc, pauseFunc, stopFunc) {
     this.initialPrey = initialPrey;
     this.preyAmt = this.initialPrey;
 
     this.neanderthalBase = neanderthalBase;
     this.neanderthals = this.neanderthalBase;
-    // this.initialNeanderthals = this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
-    this.initialNeanderthals = 100;
+    this.initialNeanderthals = initialNeanderthals;
     this.neanderthalAmt = this.initialNeanderthals;
 
     this.humanBase = humanBase;
     this.humans = this.humanBase;
-    // this.initialHumans = this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
-    this.initialHumans = 100;
+    this.initialHumans = initialHumans;
     this.humanAmt = this.initialHumans;
 
     this.solver = new ODESolver.ODESolver(

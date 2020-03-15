@@ -2,7 +2,7 @@ const THREE = require('three');
 
 
 class PopTextBox extends THREE.Group {
-  constructor(initNeanderthals, initHumans) {
+  constructor() {
     super();
     let label;
     let geometry;
@@ -89,7 +89,7 @@ class PopTextBox extends THREE.Group {
 
     this.neanCtx.fillStyle = 'black';
     this.neanCtx.textAlign = 'right';
-    label = initNeanderthals;
+    label = '';
     this.neanCtx.strokeText(label, this.neanCtx.canvas.width - 15, this.neanCtx.canvas.height / 1.5);
     this.neanCtx.fillText(label, this.neanCtx.canvas.width - 15, this.neanCtx.canvas.height / 1.5);
 
@@ -120,7 +120,7 @@ class PopTextBox extends THREE.Group {
 
     this.humanCtx.fillStyle = 'black';
     this.humanCtx.textAlign = 'right';
-    label = initHumans;
+    label = '';
     this.humanCtx.strokeText(label, this.humanCtx.canvas.width - 15, this.humanCtx.canvas.height / 1.5);
     this.humanCtx.fillText(label, this.humanCtx.canvas.width - 15, this.humanCtx.canvas.height / 1.5);
 
