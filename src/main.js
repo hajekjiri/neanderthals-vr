@@ -64,7 +64,8 @@ const init = () => {
   paramMenu.translateY(1.6);
   userRig.add(paramMenu);
 
-  let button;
+  let playPauseButton;
+  let resetButton;
 
   // initialize the environment
   let INITIAL_NEANDERTHALS = 100;
@@ -84,26 +85,26 @@ const init = () => {
       paramMenu,
       () => {
         // on start
-        button.play();
+        playPauseButton.play();
       },
       () => {
         // on pause
-        button.pause();
+        playPauseButton.pause();
       },
       () => {
         // on stop
-        button.pause();
+        playPauseButton.pause();
       },
   );
 
   textBox = new PopTextBox.PopTextBox();
   userRig.add(textBox);
   textBox.rotateY(Math.PI / 3);
-  textBox.translateY(1.8);
+  textBox.translateY(2);
   textBox.translateZ(-1.5);
 
-  button = new Button.PlayPauseButton(
-      0.5,
+  playPauseButton = new Button.PlayPauseButton(
+      0.25,
       0.1,
       () => {
         simulation.run();
@@ -113,10 +114,27 @@ const init = () => {
       },
   );
 
-  button.rotateY(Math.PI / 3);
-  button.translateY(1.2);
-  button.translateZ(-1.5);
-  userRig.add(button);
+  playPauseButton.rotateY(Math.PI / 3);
+  playPauseButton.translateY(1.525);
+  playPauseButton.translateZ(-1.5);
+  playPauseButton.translateX(0.125);
+  userRig.add(playPauseButton);
+
+  resetButton = new Button.ResetButton(
+      0.25,
+      0.1,
+      () => {
+        simulation.stop();
+        simulation.reset();
+      },
+      0xffffff,
+  );
+
+  resetButton.rotateY(Math.PI / 3);
+  resetButton.translateY(1.525);
+  resetButton.translateZ(-1.5);
+  resetButton.translateX(-0.125);
+  userRig.add(resetButton);
 
   // lights
   const light = new THREE.AmbientLight( 0xaaaaaa );

@@ -3,13 +3,13 @@ const GuiVR = require('../simulation/GuiVR');
 
 
 class Button extends GuiVR.GuiVR {
-  constructor(dimension, depth) {
+  constructor(dimension, depth, color) {
     super();
     this.dimension = dimension;
     this.depth = depth;
     this.collider = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(dimension, dimension, depth),
-        new THREE.MeshPhongMaterial({color: 0xeeeeee}),
+        new THREE.PlaneBufferGeometry(this.dimension, this.dimension),
+        new THREE.MeshPhongMaterial({color: color}),
     );
 
     this.add(this.collider);
@@ -22,7 +22,7 @@ class Button extends GuiVR.GuiVR {
 
 class PlayPauseButton extends Button {
   constructor(dimension, depth, runSimulation, pauseSimulation) {
-    super(dimension, depth);
+    super(dimension, depth, 0xeeeeee);
     this.runSimulation = runSimulation;
     this.pauseSimulation = pauseSimulation;
 
@@ -45,7 +45,7 @@ class PlayPauseButton extends Button {
             ),
         ),
     );
-    this.playSign.translateX(-0.01);
+    this.playSign.translateX(-0.03);
     this.playSign.translateZ(this.depth / 2 + 0.01);
     this.playSign.visible = true;
     this.add(this.playSign);
@@ -54,14 +54,14 @@ class PlayPauseButton extends Button {
     for (let i = 0; i < 2; ++i) {
       const line = new THREE.Mesh(
           new THREE.PlaneBufferGeometry(
-              this.dimension / 20 +0.03,
+              this.dimension / 20 +0.02,
               this.dimension / 2,
           ),
           new THREE.MeshPhongMaterial(
               {color: 0x000000, side: THREE.DoubleSide},
           ),
       );
-      line.translateX((-1)**i * 0.075);
+      line.translateX((-1)**i * 0.04 - 0.03);
       this.pauseSign.add(line);
     }
     this.pauseSign.translateZ(this.depth / 2 + 0.01);
@@ -95,7 +95,26 @@ class PlayPauseButton extends Button {
 }
 
 
+class ResetButton extends Button {
+  constructor(dimension, depth, resetSimulation) {
+    super(dimension, depth, 0xffffff)
+    this.resetSimulation = resetSimulation
+
+    this.resetSign = new THREE.Group();
+    const texture = new THREE.TextureLoader().load(
+        '/assets/textures/reset.png',
+    );
+    texture.repeat.set(1, 1);
+    this.collider.material.map = texture;
+  }
+
+  collide(uv, pt) {
+      this.resetSimulation();
+  }
+};
+
 module.exports = {
   PlayPauseButton,
+  ResetButton,
 };
 
