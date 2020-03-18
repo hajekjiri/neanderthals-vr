@@ -5,11 +5,11 @@
   "main": "dist/neanderthals-vr.js",
   "scripts": {
     "test": "mocha --reporter list",
-    "lint": "npx eslint ./src/**/*.js && echo OK",
-    "build-dev": "npx webpack --config webpack.dev.js && echo OK",
-    "build-prod": "npx webpack --config webpack.prod.js && echo OK",
-    "watch": "npx webpack --watch --config webpack.dev.js",
-    "doc": "rm -rf out && npx jsdoc src -r -d docs"
+    "lint": "eslint ./src/**/*.js && echo OK",
+    "build-dev": "webpack --config webpack.dev.js && echo OK",
+    "build-prod": "webpack --config webpack.prod.js && echo OK",
+    "watch": "webpack --watch --config webpack.dev.js",
+    "doc": "rm -rf out && jsdoc src -r -d docs"
   },
   "repository": {
     "type": "git",
@@ -22,15 +22,15 @@
   },
   "homepage": "https://github.com/hajekjiri/neanderthals-vr#readme",
   "devDependencies": {
-    "@babel/core": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
     "babel-loader": "^8.0.6",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "jsdoc": "^3.6.3",
-    "mocha": "^7.0.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "mocha": "^7.1.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "a-star": "^0.2.0",
@@ -38,6 +38,6 @@
     "https": "^1.0.0",
     "odex": "^2.0.4",
     "three": "^0.112.1",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.1"
   }
 }

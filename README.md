@@ -6,8 +6,8 @@ This project is part of the CSC385 Computer Graphics course at [Union College](h
 
 ## Getting started
 ### Requirements
-* [Node.js](https://nodejs.org/en/)
-* [npx](https://www.npmjs.com/package/npx)
+* [Node.js](https://nodejs.org/en/) (tested on v13.10.1)
+* [npm](https://www.npmjs.com/get-npm) (tested on v6.14.2)
 
 ### Setup
 Clone the repository and install dependencies.

@@ -1,22 +1,28 @@
 const THREE = require('three');
-const OrbitControls =
-    require('three/examples/jsm/controls/OrbitControls.js');
-const Base = require('./simulation/models/Base');
-const Neanderthal = require('./simulation/models/Neanderthal');
-const Human = require('./simulation/models/Human');
+const VRButton = require('three/examples/jsm/webxr/VRButton');
+const UserRig = require('./UserRig');
+const Environment = require('./simulation/Environment');
+const GuiParam = require('./simulation/GuiParameterMenu');
+const GuiVR = require('./simulation/GuiVR');
+const Simulation = require('./simulation/Simulation');
+const Button = require('./simulation/Button.js');
+const PopTextBox = require('./simulation/PopTextBox.js');
 
 let camera;
-let controls;
+
+// parameter control menu
+let paramMenu;
+
+// let controls;
 let scene;
 let renderer;
 let textBox;
-let neanderthalBase;
-let humanBase;
-
-let time = 0;
-let stop = 1;
-
-let end = false;
+let textBoxCtx;
+let userRig;
+let environment;
+let simulation;
+let clock;
+let deltaText;
 
 
 /**
@@ -32,125 +38,117 @@ const init = () => {
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
 
+  // Add VR button.
+  document.body.appendChild(VRButton.VRButton.createButton(renderer));
+  renderer.xr.enabled = true;
+
   camera = new THREE.PerspectiveCamera(
-      60,
+      65,
       window.innerWidth / window.innerHeight,
       1,
-      1250,
+      1000,
   );
-  camera.position.set( 400, 200, 0 );
 
-  // controls
-  controls = new OrbitControls.MapControls( camera, renderer.domElement );
+  camera.position.set(0, 1.6, 1);
 
-  // call this only in static scenes (i.e., if there is no animation loop)
-  // controls.addEventListener( 'change', render );
+  userRig = new UserRig.UserRig(camera, renderer.xr);
+  scene.add(userRig);
 
-  /*
-   * an animation loop is required when
-   *  either damping or auto-rotation are enabled
-   */
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.05;
+  // adjust user's position
+  userRig.translateZ(200);
+  // add parameter control menu
 
-  controls.screenSpacePanning = false;
+  paramMenu = new GuiParam.GuiParamMenu();
+  paramMenu.rotateY(-Math.PI / 3);
+  paramMenu.translateZ(-1.75);
+  paramMenu.translateY(1.6);
+  userRig.add(paramMenu);
 
-  controls.minDistance = 0;
-  controls.maxDistance = 500;
+  let playPauseButton;
+  let resetButton;
 
-  controls.maxPolarAngle = Math.PI / 2;
-
-  // ground
-  let geometry = new THREE.PlaneBufferGeometry(1000, 1000);
-  geometry.rotateX(-Math.PI / 2);
-  let texture = new THREE.TextureLoader().load(
-      '/assets/textures/grass_grass_0125_01_s.jpg',
-  );
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.repeat.set(10, 10);
-  let material = new THREE.MeshPhongMaterial({map: texture});
-  let mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
-
-  // fence
-  for (let i = 0; i < 4; ++i) {
-    geometry = new THREE.PlaneBufferGeometry(1000, 1);
-    geometry.translate(0, 0.5, -500);
-    geometry.rotateY(i * Math.PI / 2);
-    geometry.scale(1, 50, 1);
-    texture = new THREE.TextureLoader().load(
-        '/assets/textures/fence.jpg',
-    );
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(10, 1);
-    material =
-        new THREE.MeshPhongMaterial({map: texture, side: THREE.DoubleSide});
-    mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-  }
-
-  // neanderthal base
-  neanderthalBase = new Base.Base('Neanderthals', 0xff0000);
-
-  neanderthalBase.radius = 100;
-  neanderthalBase.model.position.set(
-      50 + Math.random() * 150,
+  // initialize the environment
+  let INITIAL_NEANDERTHALS = 100;
+  let INITIAL_HUMANS = 100;
+  environment = new Environment.Environment(INITIAL_NEANDERTHALS, INITIAL_HUMANS);
+  environment.rotateX(Math.PI / 2);
+  //environment.translateY(-100);
+  scene.add(environment);
+  simulation = new Simulation.Simulation(
+      1000,
+      INITIAL_NEANDERTHALS,
+      INITIAL_HUMANS,
+      environment.neanderthalBase,
+      environment.humanBase,
+      0.01,
       1,
-      50 + Math.random() * 150,
+      paramMenu,
+      () => {
+        // on start
+        playPauseButton.play();
+      },
+      () => {
+        // on pause
+        playPauseButton.pause();
+      },
+      () => {
+        // on stop
+        playPauseButton.pause();
+      },
   );
 
-  for (let i = 0; i < 10; ++i) {
-    const n = new Neanderthal.Neanderthal();
-    neanderthalBase.addEntity(n);
-    n.model.rotateY(Math.random() * 2 * Math.PI);
-    n.model.translateX(5 + Math.random() * neanderthalBase.radius);
-    n.model.rotation.y = 0;
-  }
-  scene.add(neanderthalBase.model);
+  textBox = new PopTextBox.PopTextBox();
+  userRig.add(textBox);
+  textBox.rotateY(Math.PI / 3);
+  textBox.translateY(2);
+  textBox.translateZ(-1.5);
 
-  // human base
-  humanBase = new Base.Base('humans', 0x00ff00);
-
-  humanBase.radius = 100;
-  humanBase.model.position.set(
-      -(50 + Math.random() * 150),
-      1,
-      -(50 + Math.random() * 150),
+  playPauseButton = new Button.PlayPauseButton(
+      0.25,
+      0.1,
+      () => {
+        simulation.run();
+      },
+      () => {
+        simulation.pause();
+      },
   );
 
-  for (let i = 0; i < 10; ++i) {
-    const h = new Human.Human();
-    humanBase.addEntity(h);
-    h.model.rotateY(Math.random() * 2 * Math.PI);
-    h.model.translateX(5 + Math.random() * humanBase.radius);
-    h.model.rotation.y = 0;
-  }
-  scene.add(humanBase.model);
+  playPauseButton.rotateY(Math.PI / 3);
+  playPauseButton.translateY(1.525);
+  playPauseButton.translateZ(-1.5);
+  playPauseButton.translateX(0.125);
+  userRig.add(playPauseButton);
 
-  textBox = document.createElement('div');
-  textBox.style.position = 'absolute';
-  textBox.style.zIndex = 1;
-  textBox.style.width = 100;
-  textBox.style.height = 100;
-  textBox.style.backgroundColor = 'white';
-  textBox.style.color = 'black';
-  textBox.style.padding = '5px';
-  textBox.innerHTML =
-      `<span style="color: blue;">Neanderthal</span> population:
-         ${neanderthalBase.entities.length}<br>
-       <span style="color: #ffaa00">Human</span> population:
-         ${humanBase.entities.length}`;
-  textBox.style.top = '20px';
-  textBox.style.left = '20px';
-  document.body.appendChild(textBox);
+  resetButton = new Button.ResetButton(
+      0.25,
+      0.1,
+      () => {
+        simulation.stop();
+        simulation.reset();
+      },
+      0xffffff,
+  );
+
+  resetButton.rotateY(Math.PI / 3);
+  resetButton.translateY(1.525);
+  resetButton.translateZ(-1.5);
+  resetButton.translateX(-0.125);
+  userRig.add(resetButton);
 
   // lights
   const light = new THREE.AmbientLight( 0xaaaaaa );
-  scene.add( light );
+  scene.add(light);
 
   window.addEventListener( 'resize', onWindowResize, false );
+
+  // set handler for mouse clicks
+  window.onclick = onSelectStart;
+  renderer.setAnimationLoop(render);
+
+  clock = new THREE.Clock();
+
+  deltaText = 5;
 };
 
 /**
@@ -159,7 +157,6 @@ const init = () => {
 const onWindowResize = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
   renderer.setSize( window.innerWidth, window.innerHeight );
 };
 
@@ -168,13 +165,6 @@ const onWindowResize = () => {
  */
 const animate = () => {
   requestAnimationFrame( animate );
-
-  /*
-   * only required if controls.enableDamping = true,
-   *  or if controls.autoRotate = true
-   */
-  controls.update();
-
   render();
 };
 
@@ -182,45 +172,38 @@ const animate = () => {
  * Render function
  */
 const render = () => {
-  if (end === false ) {
-    time += 0.01;
+  let delta = clock.getDelta();
+  simulation.addDelta(delta);
 
-    if (time > stop) {
-      neanderthalBase.update();
-      humanBase.update();
-
-      textBox.innerHTML =
-          `<span style="color: blue;">Neanderthal</span> population:
-             ${neanderthalBase.entities.length}<br>
-           <span style="color: #ffaa00">Human</span> population:
-             ${humanBase.entities.length}`;
-
-      if (neanderthalBase.entities.length == 0 ||
-          humanBase.entities.length == 0) {
-        if (neanderthalBase.entities.length == 0 &&
-            humanBase.entities.length == 0 ) {
-          textBox.innerHTML += '<br>Both species went extinct.';
-        } else if (neanderthalBase.entities.length == 0) {
-          textBox.innerHTML +=
-              '<br><span style="color: blue;">' +
-              'Neanderthals' +
-              '</span> went extinct.';
-        } else {
-          textBox.innerHTML +=
-              '<br><span style="color: #ffaa00">' +
-              'Humans' +
-              '</span> went extinct.';
-        }
-        end = true;
-      }
-
-      stop = time + 0.6;
-    }
+  deltaText += delta;
+  if (deltaText >= 0.1) {
+    deltaText = 0;
+    textBox.updateNumbers(simulation.timestamp, simulation.neanderthalAmt, simulation.humanAmt);
   }
 
   renderer.render( scene, camera );
 };
 
+/**
+ * Event handler for controller clicks when in VR mode, and for mouse
+ *  clicks outside of VR mode
+ * @param {*} event Event object
+ */
+const onSelectStart = (event) => {
+  if (event instanceof MouseEvent && !renderer.xr.isPresenting) {
+    // Handle mouse click outside of VR.
+    // Determine screen coordinates of click.
+    const mouse = new THREE.Vector2();
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    // Create raycaster from the camera through the click into the scene.
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(mouse, camera);
+
+    // Register the click into the GUI.
+    GuiVR.intersectObjects(raycaster);
+  }
+};
 
 init();
 // remove when using next line for animation loop (requestAnimationFrame)
