@@ -1,5 +1,4 @@
 const ODESolver = require('../util/ODESolver');
-const Person = require('./models/Person');
 const Entity = require('./models/Entity');
 const THREE = require('three');
 
@@ -10,11 +9,29 @@ class Simulation {
   /**
    * Constructor
    * @param {number} initialPrey Initial amount of prey
+   * @param {number} initialNeanderthals Initial amount of neanderthals
+   * @param {number} initialHumans Initial amount of humans
    * @param {Base} neanderthalBase Neanderthal base
    * @param {Base} humanBase Human base
    * @param {number} secondsPerUnit Seconds per 1 time unit
+   * @param {number} step
+   * @param {GuiParamMenu} paramMenu
+   * @param {function} startFunc
+   * @param {function} pauseFunc
+   * @param {function} stopFunc
    */
-  constructor(initialPrey, initialNeanderthals, initialHumans, neanderthalBase, humanBase, secondsPerUnit, step, paramMenu, startFunc, pauseFunc, stopFunc) {
+  constructor(
+      initialPrey,
+      initialNeanderthals,
+      initialHumans,
+      neanderthalBase,
+      humanBase,
+      secondsPerUnit,
+      step,
+      paramMenu,
+      startFunc,
+      pauseFunc,
+      stopFunc) {
     this.initialPrey = initialPrey;
     this.preyAmt = this.initialPrey;
 
@@ -55,8 +72,10 @@ class Simulation {
 
   /**
   * Update ode solver to match the parameters on the menu
-  */ updateODESolver() {
-    this.solver = this.paramMenu.updateParameter([this.initialPrey, this.initialNeanderthals, this.initialHumans]);
+  */
+  updateODESolver() {
+    this.solver = this.paramMenu.updateParameter(
+        [this.initialPrey, this.initialNeanderthals, this.initialHumans]);
   }
 
   /**
@@ -68,7 +87,8 @@ class Simulation {
 
     this.updatePopulationNumbers();
 
-    const deltaNeanderthals = this.neanderthalAmt - this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
+    const deltaNeanderthals = this.neanderthalAmt -
+        this.neanderthals.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']];
     for (let i = 0; i < Math.abs(deltaNeanderthals); ++i) {
       if (deltaNeanderthals > 0) {
         this.neanderthalBase.showOne(Entity.TYPES['TYPE_NEANDERTHAL']);
@@ -77,7 +97,8 @@ class Simulation {
       }
     }
 
-    const deltaHumans = this.humanAmt - this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
+    const deltaHumans = this.humanAmt -
+        this.humans.visibleAmt[Entity.TYPES['TYPE_HUMAN']];
     for (let i = 0; i < Math.abs(deltaHumans); ++i) {
       if (deltaHumans > 0) {
         this.humanBase.showOne(Entity.TYPES['TYPE_HUMAN']);
@@ -151,11 +172,14 @@ class Simulation {
     this.timestamp = 0;
     this.delta = 0;
     this.advance(0);
-    this.neanderthalBase.hide(this.neanderthalBase.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']], Entity.TYPES['TYPE_NEANDERTHAL']);
-    this.humanBase.hide(this.humanBase.visibleAmt[Entity.TYPES['TYPE_HUMAN']], Entity.TYPES['TYPE_HUMAN']);
-    console.log(`show ${this.initialNeanderthals} neanderthals and ${this.initialHumans} humans`);
-    // this.neanderthalBase.show(this.initialNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
-    // this.humanBase.show(this.initialHumans, Entity.TYPES['TYPE_HUMAN']);
+    this.neanderthalBase.hide(
+        this.neanderthalBase.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']],
+        Entity.TYPES['TYPE_NEANDERTHAL'],
+    );
+    this.humanBase.hide(
+        this.humanBase.visibleAmt[Entity.TYPES['TYPE_HUMAN']],
+        Entity.TYPES['TYPE_HUMAN'],
+    );
     this.neanderthalAmt = this.initialNeanderthals;
     this.humanAmt = this.initialHumans;
   }
@@ -181,7 +205,9 @@ class Simulation {
     this.status = this.STATUS['PAUSED'];
     this.pauseFunc();
   }
-
+  /**
+   * Stop the simulation
+   */
   stop() {
     this.paramMenu.visible = true;
     this.paramMenu.gui.collider = this.paramMenu.gui.tmpCollider;

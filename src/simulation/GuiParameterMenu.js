@@ -9,7 +9,13 @@ const THREE = require('three');
 const GuiVR = require('./GuiVR');
 const ODESolver = require('../util/ODESolver');
 
+/**
+ * GUI to change simulation's parameters
+ */
 class GuiParamMenu extends THREE.Group {
+  /**
+   * Constructor
+   */
   constructor() {
     super();
 
@@ -70,9 +76,28 @@ class GuiParamMenu extends THREE.Group {
     this.add(this.gui);
   }
 
-  // update the parameter of the differential equation
+  /**
+   * Update the parameter of the differential equation
+   * @param {Array} initialPopulation Array of new prey, neanderthal,
+       and human population numbers
+   * @return {ODESolver} Instance of ODESolver with updated population numbers
+   */
   updateParameter(initialPopulation) {
-    return new ODESolver.ODESolver(initialPopulation, this.alpha, this.beta, this.h1, this.h2, this.d1, this.d2, this.f1, this.f2, this.r, this.k, this.c1, this.c2);
+    return new ODESolver.ODESolver(
+        initialPopulation,
+        this.alpha,
+        this.beta,
+        this.h1,
+        this.h2,
+        this.d1,
+        this.d2,
+        this.f1,
+        this.f2,
+        this.r,
+        this.k,
+        this.c1,
+        this.c2,
+    );
   }
 }
 

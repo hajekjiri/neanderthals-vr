@@ -2,23 +2,28 @@
 // CSC 385 Computer Graphics
 // Version Winter 2020
 // Group Project Neanderthal VR
-// Environment Class: tracking and manipulating environment as well as both populations
+// Environment Class: tracking and manipulating environment as well as both
+//   populations
 
 const THREE = require('three');
-const VRButton = require('three/examples/jsm/webxr/VRButton');
-const UserRig = require('../UserRig');
 
 const Base = require('./models/Base');
-const Person = require('./models/Person');
 const Entity = require('./models/Entity');
-
-const entities = [];
-const coords = [];
 
 let neanderthalBase;
 let humanBase;
 
+/**
+ * Environment class
+ */
 class Environment extends THREE.Group {
+  /**
+   * Constructor
+   * @param {number} initNeanderthals Initial amount of neanderthals
+   * @param {number} initHumans Initial amount of humans
+   * @param {number} planeX Width of the map
+   * @param {number} planeY Height of the map
+   */
   constructor(initNeanderthals, initHumans, planeX = 400, planeY = 200) {
     super();
     this.initNeanderthals = initNeanderthals;
@@ -64,8 +69,8 @@ class Environment extends THREE.Group {
     neanderthalBase.radius = 25;
     neanderthalBase.model.position.set(-20, 1, 0);
 
-    neanderthalBase.preload(3 * this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
-    // neanderthalBase.show(this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
+    neanderthalBase.preload(
+        3 * this.initNeanderthals, Entity.TYPES['TYPE_NEANDERTHAL']);
     this.add(neanderthalBase.model);
 
     // human base
@@ -76,17 +81,25 @@ class Environment extends THREE.Group {
     humanBase.model.position.set(-145, 1, 80);
 
     humanBase.preload(3 * this.initHumans, Entity.TYPES['TYPE_HUMAN']);
-    // humanBase.show(this.initHumans, Entity.TYPES['TYPE_HUMAN']);
     this.add(humanBase.model);
 
     this.neanderthalBase = neanderthalBase;
     this.humanBase = humanBase;
   }
 
+  /**
+   * Getter for neanderthal population number
+   * @return {number} Neanderthal population number
+   */
   getNeanderthalPopulation() {
-    return this.neanderthalBase.entities[Entity.TYPES['TYPE_NEANDERTHAL']].length;
+    return this.neanderthalBase
+        .entities[Entity.TYPES['TYPE_NEANDERTHAL']].length;
   }
 
+  /**
+   * Getter for human population number
+   * @return {number} Human population number
+   */
   getHumanPopulation() {
     return this.humanBase.entities[Entity.TYPES['TYPE_HUMAN']].length;
   }

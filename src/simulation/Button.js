@@ -2,7 +2,17 @@ const THREE = require('three');
 const GuiVR = require('../simulation/GuiVR');
 
 
+/**
+ * Generic button
+ * @abstract
+ */
 class Button extends GuiVR.GuiVR {
+  /**
+   * Constructor
+   * @param {number} dimension Width and height of the button
+   * @param {number} depth Depth of the button
+   * @param {number} color Color of the button
+   */
   constructor(dimension, depth, color) {
     super();
     this.dimension = dimension;
@@ -15,12 +25,25 @@ class Button extends GuiVR.GuiVR {
     this.add(this.collider);
   }
 
-  collide(uv, pt) {
+  /**
+   * Click handler
+   */
+  collide() {
     throw new Error('Collide has to be implemented');
   }
 }
 
+/**
+ * Button with play and pause signs
+ */
 class PlayPauseButton extends Button {
+  /**
+   * Constructor
+   * @param {number} dimension Width and height of the button
+   * @param {number} depth Depth of the button
+   * @param {function} runSimulation Function to run the simulation
+   * @param {function} pauseSimulation Function to pause the simulation
+   */
   constructor(dimension, depth, runSimulation, pauseSimulation) {
     super(dimension, depth, 0xeeeeee);
     this.runSimulation = runSimulation;
@@ -69,18 +92,29 @@ class PlayPauseButton extends Button {
     this.add(this.pauseSign);
   }
 
+  /**
+   * Change status to 'PLAY' and show play sign
+   */
   play() {
     this.status = this.STATUS['PLAY'];
     this.playSign.visible = false;
     this.pauseSign.visible = true;
   }
 
+  /**
+   * Change status to 'PAUSE' and show pause sign
+   */
   pause() {
     this.status = this.STATUS['PAUSE'];
     this.playSign.visible = true;
     this.pauseSign.visible = false;
   }
 
+  /**
+   * Click handler
+   * @param {*} uv Local click intersect coordinates
+   * @param {*} pt World click intersect coordinates
+   */
   collide(uv, pt) {
     if (this.status === this.STATUS['PLAY']) {
       this.pause();
@@ -94,11 +128,19 @@ class PlayPauseButton extends Button {
   }
 }
 
-
+/**
+ * Button with reset sign
+ */
 class ResetButton extends Button {
+  /**
+   * Constructor
+   * @param {number} dimension Width and height of the button
+   * @param {number} depth Depth of the button
+   * @param {function} resetSimulation Function to reset the simulation
+   */
   constructor(dimension, depth, resetSimulation) {
-    super(dimension, depth, 0xffffff)
-    this.resetSimulation = resetSimulation
+    super(dimension, depth, 0xffffff);
+    this.resetSimulation = resetSimulation;
 
     this.resetSign = new THREE.Group();
     const texture = new THREE.TextureLoader().load(
@@ -108,8 +150,13 @@ class ResetButton extends Button {
     this.collider.material.map = texture;
   }
 
+  /**
+   * Click handler
+   * @param {*} uv Local click intersect coordinates
+   * @param {*} pt World click intersect coordinates
+   */
   collide(uv, pt) {
-      this.resetSimulation();
+    this.resetSimulation();
   }
 };
 
