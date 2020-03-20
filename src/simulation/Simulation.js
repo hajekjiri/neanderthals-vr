@@ -60,6 +60,8 @@ class Simulation {
     this.pauseFunc = pauseFunc;
     this.stopFunc = stopFunc;
 
+    this.paramMenu.gui.tmpCollider = null;
+
     this.STATUS = {
       'PAUSED': 0,
       'RUNNING': 1,
@@ -192,7 +194,9 @@ class Simulation {
       this.reset();
     }
     this.paramMenu.visible = false;
-    this.paramMenu.gui.tmpCollider = this.paramMenu.gui.collider;
+    if (this.paramMenu.gui.tmpCollider === null) {
+      this.paramMenu.gui.tmpCollider = this.paramMenu.gui.collider;
+    }
     this.paramMenu.gui.collider = new THREE.Group();
     this.status = this.STATUS['RUNNING'];
     this.startFunc();
@@ -211,6 +215,7 @@ class Simulation {
   stop() {
     this.paramMenu.visible = true;
     this.paramMenu.gui.collider = this.paramMenu.gui.tmpCollider;
+    this.paramMenu.gui.tmpCollider = null;
     this.status = this.STATUS['STOPPED'];
     this.stopFunc();
   }
