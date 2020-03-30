@@ -25,7 +25,7 @@ class Base extends Entity.Entity {
 
     this.visibleAmt = {};
     this.visibleAmt[Entity.TYPES['TYPE_HUMAN']] = 0;
-    this.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']] = 0
+    this.visibleAmt[Entity.TYPES['TYPE_NEANDERTHAL']] = 0;
 
     const geometry = new THREE.BoxBufferGeometry(1, 10, 1);
     geometry.translate(0, 5, 0);
@@ -35,10 +35,20 @@ class Base extends Entity.Entity {
     this.model.add(mesh);
   }
 
+  /**
+   * Preload entities to be rendered later, essentially a wrapper for add()
+   * @param {number} amt Amount of entities to preload
+   * @param {*} type Type of entities to preload
+   */
   preload(amt, type) {
     this.add(amt, type);
   }
 
+  /**
+   * Add entities to base
+   * @param {number} amt Amount of entities to preload
+   * @param {*} type Type of entities to preload
+   */
   add(amt, type) {
     for (let i = 0; i < amt; ++i) {
       const entity = new Person.Person(type);
@@ -52,13 +62,18 @@ class Base extends Entity.Entity {
   }
 
   /**
-   * Add an entity to the base
-   * @param {Entity} entity Entity to be added
+   * Add one entity to the base
+   * @param {*} type Type of entity to be added
    */
   addOne(type) {
     this.add(1, type);
   }
 
+  /**
+   * Render entities
+   * @param {number} amt Amount of entities to render
+   * @param {*} type Type of entities to render
+   */
   show(amt, type) {
     if (this.visibleAmt[type] + amt > this.entities[type].length) {
       this.add(this.visibleAmt[type] + amt - this.entities[type].length, type);
@@ -70,10 +85,19 @@ class Base extends Entity.Entity {
     this.visibleAmt[type] += amt;
   }
 
+  /**
+   * Render one entity
+   * @param {*} type Type of entity to render
+   */
   showOne(type) {
     this.show(1, type);
   }
 
+  /**
+   * Hide entities (opposite of show)
+   * @param {number} amt Amount of entities to hide
+   * @param {*} type Type of entities to hide
+   */
   hide(amt, type) {
     let low;
     if (this.visibleAmt[type] - amt > 0) {
@@ -88,6 +112,10 @@ class Base extends Entity.Entity {
     this.visibleAmt[type] = low;
   }
 
+  /**
+   * Hide entity (opposite of showOne)
+   * @param {*} type Type of entity to hide
+   */
   hideOne(type) {
     this.hide(1, type);
   }

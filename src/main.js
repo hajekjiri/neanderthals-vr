@@ -17,7 +17,6 @@ let paramMenu;
 let scene;
 let renderer;
 let textBox;
-let textBoxCtx;
 let userRig;
 let environment;
 let simulation;
@@ -64,15 +63,12 @@ const init = () => {
   paramMenu.translateY(1.6);
   userRig.add(paramMenu);
 
-  let playPauseButton;
-  let resetButton;
-
   // initialize the environment
-  let INITIAL_NEANDERTHALS = 100;
-  let INITIAL_HUMANS = 100;
-  environment = new Environment.Environment(INITIAL_NEANDERTHALS, INITIAL_HUMANS);
+  const INITIAL_NEANDERTHALS = 100;
+  const INITIAL_HUMANS = 100;
+  environment =
+      new Environment.Environment(INITIAL_NEANDERTHALS, INITIAL_HUMANS);
   environment.rotateX(Math.PI / 2);
-  //environment.translateY(-100);
   scene.add(environment);
   simulation = new Simulation.Simulation(
       1000,
@@ -103,7 +99,7 @@ const init = () => {
   textBox.translateY(2);
   textBox.translateZ(-1.5);
 
-  playPauseButton = new Button.PlayPauseButton(
+  const playPauseButton = new Button.PlayPauseButton(
       0.25,
       0.1,
       () => {
@@ -120,7 +116,7 @@ const init = () => {
   playPauseButton.translateX(0.125);
   userRig.add(playPauseButton);
 
-  resetButton = new Button.ResetButton(
+  const resetButton = new Button.ResetButton(
       0.25,
       0.1,
       () => {
@@ -172,13 +168,14 @@ const animate = () => {
  * Render function
  */
 const render = () => {
-  let delta = clock.getDelta();
+  const delta = clock.getDelta();
   simulation.addDelta(delta);
 
   deltaText += delta;
   if (deltaText >= 0.1) {
     deltaText = 0;
-    textBox.updateNumbers(simulation.timestamp, simulation.neanderthalAmt, simulation.humanAmt);
+    textBox.updateNumbers(
+        simulation.timestamp, simulation.neanderthalAmt, simulation.humanAmt);
   }
 
   renderer.render( scene, camera );
