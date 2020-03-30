@@ -6,9 +6,9 @@
 //   populations
 
 const THREE = require('three');
-
 const Base = require('./models/Base');
 const Entity = require('./models/Entity');
+const env = require('../../env.json');
 
 let neanderthalBase;
 let humanBase;
@@ -35,7 +35,7 @@ class Environment extends THREE.Group {
     let geometry = new THREE.PlaneBufferGeometry(this.planeX, this.planeY);
     geometry.rotateX(-Math.PI / 2);
     const texture = new THREE.TextureLoader().load(
-        '/assets/textures/eurasia.png',
+        env['project-prefix'] + '/assets/textures/eurasia.png',
     );
     texture.repeat.set(1, 1);
     let material = new THREE.MeshPhongMaterial({map: texture});
