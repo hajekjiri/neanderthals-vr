@@ -5,7 +5,7 @@
   "main": "dist/neanderthals-vr.js",
   "scripts": {
     "test": "mocha --reporter list",
-    "lint": "eslint ./src/**/*.js && echo OK",
+    "lint": "eslint ./src && echo OK",
     "build-dev": "webpack --config webpack.dev.js && echo OK",
     "build-prod": "webpack --config webpack.prod.js && echo OK",
     "watch": "webpack --watch --config webpack.dev.js",
