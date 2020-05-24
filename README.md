@@ -1,6 +1,6 @@
 # Neanderthals VR
 ## About
-Neanderthals VR is a simple simulation of neanderthal and modern human populations visualized in VR. You can alter the outcome by changing various parameters and make one specie outlive the other. The simulation stops once one of the species goes extinct and shows you the elapsed time in years as well as the population numbers throughout the simulation. 
+Neanderthals VR is a simple simulation of neanderthal and modern human populations visualized in VR. You can alter the outcome by changing various parameters and make one specie outlive the other. The simulation stops once one of the species goes extinct and shows you the elapsed time in years as well as the population numbers throughout the simulation. The simulation is based on [this research paper](https://doi.org/10.1016/j.jhevol.2018.07.006) (population numbers are determined by solving a differential equation provided in the paper).
 
 This project was a part of the CSC385 Computer Graphics course at [Union College](https://union.edu/).
 
