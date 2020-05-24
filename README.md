@@ -1,8 +1,8 @@
 # Neanderthals VR
 ## About
-The goal of this project is to create a simulation of neanderthal and modern human populations that interact with each other and the environment they live in. The simulation will be visualized in VR using [three.js](https://github.com/mrdoob/three.js/).
+Neanderthals VR is a simple simulation of neanderthal and modern human populations visualized in VR. You can alter the outcome by changing various parameters and make one specie outlive the other. The simulation stops once one of the species goes extinct and shows you the elapsed time in years as well as the population numbers throughout the simulation. 
 
-This project is part of the CSC385 Computer Graphics course at [Union College](https://union.edu/) so **we cannot accept PRs at the moment**, though feel free to create [issues](https://github.com/hajekjiri/neanderthals-vr/issues).
+This project was a part of the CSC385 Computer Graphics course at [Union College](https://union.edu/).
 
 ## Getting started
 ### Requirements
@@ -53,10 +53,10 @@ Start the included watcher that will automatically rebuild the project whenever 
 ```
 npm run watch
 ```
-**Note**: You don't have to restart the Express server for changes to take effect. Just hit refresh in your browser.
+**Note**: You don't have to restart the Express server for changes to take effect. Just hit the refresh button in your browser.
 
 ##### Testing
-[Mocha](https://mochajs.org/) is the framework of choice for testing. All tests are located in the `test` folder. Use the `test` script to run tests.
+The [Mocha](https://mochajs.org/) framework is used for testing. All tests are located in the `test` folder. Use the `test` script to run tests.
 ```
 npm run test
 ```
