@@ -1,7 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const https = require('https');
-const app = express();
 const argv = require('yargs')
     .options({
       'port': {
@@ -33,6 +32,8 @@ if (! fs.existsSync(__dirname + '/dist/neanderthals-vr.js')) {
   console.log('npm run build-prod #build for production');
   process.exit(1);
 }
+
+const app = express();
 
 app.use('/', express.static(__dirname + '/dist'));
 app.use('/assets', express.static(__dirname + '/assets'));
