@@ -73,3 +73,8 @@ Documentation can be generated using [JSDoc](https://jsdoc.app/) and then access
 npm run doc
 ```
 
+## Used external modules
+* [expressjs/express](https://github.com/expressjs/express) is licensed under the [MIT license](https://github.com/expressjs/express/blob/master/LICENSE)
+* [littleredcomputer/odex-js](https://github.com/littleredcomputer/odex-js) is licensed under the [BSD-2-Clause License](https://github.com/littleredcomputer/odex-js/blob/master/LICENSE)
+* [mrdoob/three.js](https://github.com/mrdoob/three.js) is licensed under the [MIT license](https://github.com/mrdoob/three.js/blob/dev/LICENSE)
+* [yargs/yargs](https://github.com/yargs/yargs) is licensed under the [MIT license](https://github.com/yargs/yargs/blob/master/LICENSE)

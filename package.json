@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "https": "^1.0.0",
     "odex": "^2.0.4",
     "three": "^0.112.1",
     "yargs": "^15.3.1"
