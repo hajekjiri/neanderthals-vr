@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     filename: 'neanderthals-vr.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'assets/js'),
   },
   module: {
     rules: [

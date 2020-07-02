@@ -25,8 +25,8 @@ if (argv.hasOwnProperty('port')) {
 }
 
 // check if project is built
-if (! fs.existsSync(__dirname + '/dist/neanderthals-vr.js')) {
-  console.log('Could not find dist/neanderthals-vr.js');
+if (! fs.existsSync(__dirname + '/assets/js/neanderthals-vr.js')) {
+  console.log('Could not find ./assets/js/neanderthals-vr.js');
   console.log('Use one of the following commands to build the project');
   console.log('npm run build-dev #build for development');
   console.log('npm run build-prod #build for production');
@@ -35,8 +35,8 @@ if (! fs.existsSync(__dirname + '/dist/neanderthals-vr.js')) {
 
 const app = express();
 
-app.use('/', express.static(__dirname + '/dist'));
-app.use('/assets', express.static(__dirname + '/assets'));
+app.use('/', express.static(__dirname + '/'));
+// app.use('/assets', express.static(__dirname + '/assets'));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');

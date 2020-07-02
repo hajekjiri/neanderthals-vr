@@ -1,6 +1,5 @@
 const THREE = require('three');
 const GuiVR = require('../simulation/GuiVR');
-const env = require('../../env.json');
 
 
 /**
@@ -145,8 +144,7 @@ class ResetButton extends Button {
 
     this.resetSign = new THREE.Group();
     const texture = new THREE.TextureLoader().load(
-        env['project-prefix'] + '/assets/textures/reset.png',
-    );
+        'assets/textures/reset.png');
     texture.repeat.set(1, 1);
     this.collider.material.map = texture;
   }
