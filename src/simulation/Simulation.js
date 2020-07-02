@@ -60,7 +60,7 @@ class Simulation {
     this.pauseFunc = pauseFunc;
     this.stopFunc = stopFunc;
 
-    this.paramMenu.gui.tmpCollider = null;
+    this.paramMenu.gui.tmpCollider = this.paramMenu.gui.collider;
 
     this.STATUS = {
       'PAUSED': 0,
@@ -213,6 +213,9 @@ class Simulation {
    * Stop the simulation
    */
   stop() {
+    if (this.status === this.STATUS['STOPPED']) {
+      return;
+    }
     this.paramMenu.visible = true;
     this.paramMenu.gui.collider = this.paramMenu.gui.tmpCollider;
     this.paramMenu.gui.tmpCollider = null;
