@@ -5,64 +5,41 @@ Neanderthals VR is a simple simulation of neanderthal and modern human populatio
 This project was a part of the CSC385 Computer Graphics course at [Union College](https://union.edu/).
 
 ## Getting started
-### Requirements
-* [Node.js](https://nodejs.org/en/) (tested on v14.3.0)
-* [npm](https://www.npmjs.com/get-npm) (tested on v6.14.5)
+The app is live on my [GitHub pages](https://hajekjiri.github.io/neanderthals-vr). If you want to run it locally, follow the steps below.
 
-### Setup
-Clone the repository and install dependencies.
+### Running locally
+#### 1. Clone the repository and install dependencies
 ```
 git clone https://github.com/hajekjiri/neanderthals-vr.git
 cd neanderthals-vr
 npm install
 ```
 
-### Building the project
-There are 2 building options.
+#### 2. Build the project
+There are 2 building options
+* prod (compression on)
+* dev (compression off)
 
-#### Development
-Builds the project without compression for easier debugging.
 ```
+# build for production
+npm run build-prod
+
+# build for development
 npm run build-dev
 ```
 
-#### Production
-Builds the project with compression on.
-```
-npm run build-prod
-```
-
-### Running the project
-HTTPS is required to run VR apps in the browser. If you don't already have a certificate/key pair, generate a self-signed certificate with [OpenSSL](https://www.openssl.org/) and store the certificate as well as the key in a folder called `ssl`. Name the files `server.key` and `server.cert`.
-```
-mkdir ssl
-cd ssl
-openssl req -nodes -new -x509 -keyout server.key -out server.cert
-```
-
-Make sure to [build](#building-the-project) the project before you run it.
-Use `node app.js [--port <port>]` to start an [Express](https://expressjs.com/) server on a specified port. If no port is specified, the server will start on port 3000 by default.
-```
-node app.js
-# Your app is live at https://localhost:3000/ !
-```
+#### 3. Run it
+Put the project on your webserver and navigate to `index.html`.
 
 ### Development
 ##### Watcher
-Start the included watcher that will automatically rebuild the project whenever you make changes to the code.
+Start the included watcher to automatically rebuild the project whenever you make changes to the code.
 ```
 npm run watch
 ```
-**Note**: You don't have to restart the Express server for changes to take effect. Just hit the refresh button in your browser.
-
-##### Testing
-The [Mocha](https://mochajs.org/) framework is used for testing. All tests are located in the `test` folder. Use the `test` script to run tests.
-```
-npm run test
-```
 
 ##### Code style
-This project is following the [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html). Use the `lint` script to check whether the code is compliant.
+This project follows the [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html). Use the `lint` script to check whether the code is compliant.
 ```
 npm run lint
 ```
@@ -74,7 +51,5 @@ npm run doc
 ```
 
 ## Used external modules
-* [expressjs/express](https://github.com/expressjs/express) is licensed under the [MIT license](https://github.com/expressjs/express/blob/master/LICENSE)
 * [littleredcomputer/odex-js](https://github.com/littleredcomputer/odex-js) is licensed under the [BSD-2-Clause License](https://github.com/littleredcomputer/odex-js/blob/master/LICENSE)
 * [mrdoob/three.js](https://github.com/mrdoob/three.js) is licensed under the [MIT license](https://github.com/mrdoob/three.js/blob/dev/LICENSE)
-* [yargs/yargs](https://github.com/yargs/yargs) is licensed under the [MIT license](https://github.com/yargs/yargs/blob/master/LICENSE)

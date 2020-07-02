@@ -2,14 +2,14 @@
   "name": "neanderthals-vr",
   "version": "1.0.0",
   "description": "Neanderthals VR",
-  "main": "dist/neanderthals-vr.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "mocha --reporter list",
     "lint": "eslint ./src && echo OK",
     "build-dev": "webpack --config webpack.dev.js && echo OK",
     "build-prod": "webpack --config webpack.prod.js && echo OK",
     "watch": "webpack --watch --config webpack.dev.js",
-    "doc": "rm -rf out && jsdoc src -r -d docs"
+    "doc": "jsdoc src -r -d docs"
   },
   "repository": {
     "type": "git",
@@ -33,9 +33,7 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "express": "^4.17.1",
     "odex": "^2.0.4",
-    "three": "^0.112.1",
-    "yargs": "^15.3.1"
+    "three": "^0.112.1"
   }
 }
